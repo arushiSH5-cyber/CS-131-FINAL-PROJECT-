@@ -1,0 +1,53 @@
+CS 131 Final Project — Phase 3: Scale with PySpark on Dataproc
+Rule: raw data stays in GCS (gs://...). Do NOT copy multi-GB files into home dir.
+Rule: DELETE the cluster at the end of each day.
+
+================================================================
+SETUP
+================================================================
+# Bucket + upload (one time). Raw data lives ONLY here.
+$ gsutil mb -l us-west1 gs://<BUCKET>
+$ gsutil -m cp *.json.gz gs://<BUCKET>/gharchive/
+
+# Ephemeral cluster (cheapest pattern). N = number of workers.
+$ gcloud dataproc clusters create cs131-cluster \
+    --region us-west1 --num-workers N \
+    --master-machine-type n2-standard-4 --worker-machine-type n2-standard-4 \
+    --image-version 2.2-debian12
+
+# Submit the job (read straight from gs://):
+$ gcloud dataproc jobs submit pyspark spark_job.py \
+    --cluster cs131-cluster --region us-west1 \
+    -- gs://<BUCKET>/gharchive/'*.json.gz'
+
+# TEAR DOWN when done:
+$ gcloud dataproc clusters delete cs131-cluster --region us-west1 --quiet
+
+================================================================
+SCALING EXPERIMENT — same job, 1 then 2 then 4 workers
+================================================================
+Run spark_job.py unchanged; only --num-workers changes. Record wall-clock.
+
+| Workers | Job wall-clock | Speedup vs 1w | Notes |
+|---------|----------------|---------------|-------|
+| 1       |                | 1.00x         |       |
+| 2       |                |               |       |
+| 4       |                |               |       |
+
+Where to read runtime: Dataproc job "Elapsed time" in console, or `time` around submit.
+
+================================================================
+DATA-ENGINEERING WORK DONE (check what applies)
+================================================================
+[ ] Explicit schema defined (not inferred)
+[ ] Transform / filter to AI-repo vs general-repo
+[ ] groupBy aggregation
+[ ] window function (e.g., month-over-month growth)
+[ ] join (e.g., repo activity vs event-type)
+[ ] cache() on reused DataFrame
+[ ] Spark SQL (optional)
+
+================================================================
+NOTES (for the "Scaling" poster section)
+================================================================
+- Did runtime roughly halve from 1->2 workers? From 2->4? Why / why not (shuffle, skew, overhead)?

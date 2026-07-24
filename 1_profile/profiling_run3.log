@@ -1,0 +1,97 @@
+=== CS131 Phase 1 profiling run, part 3 (single-stream redos + extras; nice 19) ===
+host: spark-833c  started: 2026-07-22T00:14:16Z
+waiting for part 2 to complete before touching the data (clean timings)...
+part 2 process gone without completion marker -> relaunching it (2026-07-22T00:52:20Z)
+part 2 finished; starting part 3 at 2026-07-22T04:14:06Z
+
+================================================================
+A. INVENTORY (clean re-run; part-1 log was contaminated)
+================================================================
+# load average: 7.42, 10.63, 12.78
+$ time ls *.json.gz | wc -l
+552
+
+real	0m0.006s
+user	0m0.003s
+sys	0m0.005s
+
+# load average: 7.42, 10.63, 12.78
+$ time du -ch *.json.gz | tail -1
+35G	total
+
+real	0m0.006s
+user	0m0.001s
+sys	0m0.007s
+
+================================================================
+B. UNCOMPRESSED SIZE — exact template command, single stream
+================================================================
+# load average: 7.42, 10.63, 12.78
+$ time zcat *.json.gz | wc -c
+273494892306
+
+real	38m29.020s
+user	36m26.117s
+sys	7m11.833s
+
+================================================================
+C. RUBRIC EXTRAS on one hourly file: cut -d',' -f and column -t
+================================================================
+# First 3 events as CSV (schema peek, csv-tool friendly):
+# load average: 4.44, 4.51, 5.21
+$ time zcat 2024-01-15-15.json.gz | head -3 | jq -r '[.created_at,.type,.actor.login,.repo.name] | @csv'
+"2024-01-15T15:00:00Z","CreateEvent","prasham04","prasham04/SImon-game"
+"2024-01-15T15:00:00Z","CreateEvent","dependabot[bot]","dm-drogeriemarkt/lisa"
+"2024-01-15T15:00:00Z","PushEvent","abdelemjidessaid","abdelemjidessaid/alx-backend-python"
+
+real	0m0.005s
+user	0m0.003s
+sys	0m0.007s
+
+# Event-type counts in that hour via cut on the CSV field:
+# load average: 4.44, 4.51, 5.21
+$ time zcat 2024-01-15-15.json.gz | jq -r '[.created_at,.type,.repo.name] | @csv' | cut -d',' -f2 | sort | uniq -c | sort -nr | head -15
+ 169030 "PushEvent"
+  28616 "CreateEvent"
+  18272 "PullRequestEvent"
+  11687 "IssueCommentEvent"
+   9548 "WatchEvent"
+   7556 "DeleteEvent"
+   7217 "PullRequestReviewEvent"
+   4311 "PullRequestReviewCommentEvent"
+   4170 "IssuesEvent"
+   2373 "ForkEvent"
+   1247 "ReleaseEvent"
+    891 "PublicEvent"
+    815 "CommitCommentEvent"
+    724 "MemberEvent"
+    414 "GollumEvent"
+
+real	0m19.560s
+user	0m27.597s
+sys	0m1.800s
+
+# Same table aligned with column -t:
+# load average: 4.60, 4.54, 5.20
+$ time zcat 2024-01-15-15.json.gz | jq -r '.type' | sort | uniq -c | sort -nr | column -t
+169030  PushEvent
+28616   CreateEvent
+18272   PullRequestEvent
+11687   IssueCommentEvent
+9548    WatchEvent
+7556    DeleteEvent
+7217    PullRequestReviewEvent
+4311    PullRequestReviewCommentEvent
+4170    IssuesEvent
+2373    ForkEvent
+1247    ReleaseEvent
+891     PublicEvent
+815     CommitCommentEvent
+724     MemberEvent
+414     GollumEvent
+
+real	0m17.718s
+user	0m25.868s
+sys	0m1.661s
+
+=== part 3 complete: 2026-07-22T04:53:12Z ===

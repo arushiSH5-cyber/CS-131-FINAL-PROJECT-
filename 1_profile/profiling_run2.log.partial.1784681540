@@ -1,0 +1,87 @@
+=== CS131 Phase 1 profiling run, part 2 (parallel, 10 of 20 cores, nice 19) ===
+host: spark-833c  date: 2026-07-21T23:36:36Z
+
+================================================================
+0a. ROW COUNT — single stream, exact template command (> 50 M floor)
+================================================================
+$ time zcat *.json.gz | wc -l
+85339282
+
+real	39m17.801s
+user	37m45.016s
+sys	7m7.403s
+
+================================================================
+0b. UNCOMPRESSED SIZE — parallel (per-file zcat|wc -c, summed)
+================================================================
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | wc -c' sh | awk '{s+=$1} END{print s}'
+273494892306
+
+real	12m37.212s
+user	93m30.439s
+sys	16m4.771s
+
+================================================================
+1. PEEK AT THE SCHEMA (head / tail / jq)
+================================================================
+$ time zcat 2024-01-15-15.json.gz | head -1 | jq .
+{
+  "id": "34834865479",
+  "type": "CreateEvent",
+  "actor": {
+    "id": 140599107,
+    "login": "prasham04",
+    "display_login": "prasham04",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/prasham04",
+    "avatar_url": "https://avatars.githubusercontent.com/u/140599107?"
+  },
+  "repo": {
+    "id": 743589745,
+    "name": "prasham04/SImon-game",
+    "url": "https://api.github.com/repos/prasham04/SImon-game"
+  },
+  "payload": {
+    "ref": null,
+    "ref_type": "repository",
+    "master_branch": "main",
+    "description": null,
+    "pusher_type": "user"
+  },
+  "public": true,
+  "created_at": "2024-01-15T15:00:00Z"
+}
+
+real	0m0.023s
+user	0m0.011s
+sys	0m0.021s
+
+$ time zcat 2024-01-15-15.json.gz | head -1 | jq 'keys'
+[
+  "actor",
+  "created_at",
+  "id",
+  "payload",
+  "public",
+  "repo",
+  "type"
+]
+
+real	0m0.007s
+user	0m0.004s
+sys	0m0.008s
+
+$ time zcat 2024-01-15-15.json.gz | tail -1 | jq -c '{id,type,actor:.actor.login,repo:.repo.name,created_at}'
+{"id":"34836645420","type":"PullRequestReviewCommentEvent","actor":"nkanazawa1989","repo":"Qiskit/qiskit","created_at":"2024-01-15T15:56:31Z"}
+
+real	0m8.007s
+user	0m7.777s
+sys	0m1.324s
+
+================================================================
+2. TOP CATEGORIES / CARDINALITY — parallel over all 552 files
+================================================================
+# Event-type distribution (per-file jq|sort|uniq -c, merged with awk):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".type" | sort | uniq -c' sh | awk '{c[$2]+=$1} END{for(t in c) printf "%9d %s
+", c[t], t}' | sort -nr
+Terminated

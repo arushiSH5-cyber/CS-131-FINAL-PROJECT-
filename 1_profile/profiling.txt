@@ -1,0 +1,254 @@
+CS 131 Final Project — Phase 1: Profiling (command line only)
+Goal: characterize the dataset WITHOUT loading it into memory.
+Rule: EVERY command is prefixed with `time`; real/user/sys pasted verbatim.
+
+Dataset: GH Archive (hourly public GitHub events, gzip NDJSON)
+  1 day per quarter, 2021-Q1 .. 2026-Q3 (the 15th of Jan/Apr/Jul/Oct),
+  all 24 hourly files per day = 23 days = 552 .json.gz files
+  in ~/final_project/data/ (downloaded via download_quarters.sh, public HTTP).
+
+Measured on: spark-833c (20 cores, 121 GiB RAM, NVMe), 2026-07-21/22 UTC.
+CAVEAT — shared host: ~17 logged-in users and an ollama LLM server pinning
+~2 cores the whole time (load average 4–13). All heavy commands ran under
+`nice -n 19 ionice -c3` (shared-box etiquette; timings are honest
+worst-case). Parallel commands used 10 of the 20 cores.
+Raw timed logs (source of truth, kept in this directory):
+  profiling_run.log   — first attempt, killed by contention: superseded
+  profiling_run2.log  — part 2: single-stream row count + 10-core passes
+  profiling_run3.log  — part 3: single-stream byte count + cut/column extras
+Scripts: run_profiling.sh, run_profiling_fast.sh, run_profiling_part3.sh
+
+================================================================
+0. PROVE THE SIZE FLOOR (> 5 GB and > 50 million rows)
+================================================================
+# File inventory:
+$ time ls *.json.gz | wc -l
+552
+real	0m0.006s  user	0m0.003s  sys	0m0.005s
+
+# Total on-disk size (compressed):
+$ time du -ch *.json.gz | tail -1
+35G	total
+real	0m0.006s  user	0m0.001s  sys	0m0.007s
+
+# Uncompressed size without extracting (stream through wc), single stream:
+$ time zcat *.json.gz | wc -c
+273494892306
+real	38m29.020s  user	36m26.117s  sys	7m11.833s
+# -> 273.49 GB (254.7 GiB): ~55x over the 5 GB floor, ~7.3x compression.
+
+# Same measurement, 10-core parallel (per-file zcat|wc -c, summed):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | wc -c' sh | awk '{s+=$1} END{print s}'
+273494892306
+real	13m26.302s  user	96m8.688s  sys	16m26.164s
+# -> byte-for-byte identical to the single stream: 38m29s -> 13m26s (2.9x).
+
+# Row count = one JSON event per line, single stream (exact template cmd):
+$ time zcat *.json.gz | wc -l
+85339282
+real	38m37.140s  user	37m1.694s  sys	6m56.306s
+# -> 85,339,282 events: 1.7x over the 50 M row floor.
+
+================================================================
+1. PEEK AT THE SCHEMA (head / tail / jq)
+================================================================
+$ time zcat 2024-01-15-15.json.gz | head -1 | jq .
+{
+  "id": "34834865479",
+  "type": "CreateEvent",
+  "actor": {
+    "id": 140599107,
+    "login": "prasham04",
+    "display_login": "prasham04",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/prasham04",
+    "avatar_url": "https://avatars.githubusercontent.com/u/140599107?"
+  },
+  "repo": {
+    "id": 743589745,
+    "name": "prasham04/SImon-game",
+    "url": "https://api.github.com/repos/prasham04/SImon-game"
+  },
+  "payload": {
+    "ref": null,
+    "ref_type": "repository",
+    "master_branch": "main",
+    "description": null,
+    "pusher_type": "user"
+  },
+  "public": true,
+  "created_at": "2024-01-15T15:00:00Z"
+}
+real	0m0.013s  user	0m0.008s  sys	0m0.018s
+# head -1 returns in milliseconds no matter how big the dataset is:
+# streaming reads only what it needs.
+
+$ time zcat 2024-01-15-15.json.gz | head -1 | jq 'keys'
+["actor","created_at","id","payload","public","repo","type"]
+real	0m0.018s  user	0m0.011s  sys	0m0.015s
+
+$ time zcat 2024-01-15-15.json.gz | tail -1 | jq -c '{id,type,actor:.actor.login,repo:.repo.name,created_at}'
+{"id":"34836645420","type":"PullRequestReviewCommentEvent","actor":"nkanazawa1989","repo":"Qiskit/qiskit","created_at":"2024-01-15T15:56:31Z"}
+real	0m9.290s  user	0m8.837s  sys	0m1.712s
+# tail must decompress the WHOLE hour first (9 s for one hourly file) —
+# gzip has no random access; a first taste of why full passes are expensive.
+
+================================================================
+2. TOP CATEGORIES / CARDINALITY (sort | uniq -c | sort -nr)
+================================================================
+# Event-type distribution over all 552 files (10-core: per-file
+# jq|sort|uniq -c, batch counts merged with awk):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".type" | sort | uniq -c' sh | awk '{c[$2]+=$1} END{for(t in c) printf "%9d %s\n", c[t], t}' | sort -nr
+ 52244295 PushEvent
+ 10597330 CreateEvent
+  6005006 PullRequestEvent
+  3475321 WatchEvent
+  3474899 IssueCommentEvent
+  2602051 DeleteEvent
+  1846851 IssuesEvent
+  1728659 PullRequestReviewEvent
+  1130366 PullRequestReviewCommentEvent
+   951537 ForkEvent
+   439493 ReleaseEvent
+   250274 CommitCommentEvent
+   238793 PublicEvent
+   230248 MemberEvent
+   122078 GollumEvent
+     2082 DiscussionEvent
+real	30m4.864s  user	315m28.205s  sys	19m6.611s
+# PushEvent = 61.2% of all public GitHub activity. 315 CPU-minutes of jq
+# packed into 30 wall-minutes -> a single-core run would take ~5.3 hours.
+
+# Distinct actors (cardinality; per-batch sorted-unique, one final merge):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".actor.login" | LC_ALL=C sort -u > $T/actors_$$.txt' sh && LC_ALL=C sort -mu $T/actors_*.txt | wc -l
+8268278
+real	30m14.693s  user	315m52.832s  sys	19m5.323s
+
+# Distinct repos (same technique):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".repo.name" | LC_ALL=C sort -u > $T/repos_$$.txt' sh && LC_ALL=C sort -mu $T/repos_*.txt | wc -l
+13206596
+real	29m30.237s  user	312m55.199s  sys	19m13.276s
+# 8.27 M distinct actors touched 13.21 M distinct repos in just 23 sampled
+# days — more repos than people.
+
+================================================================
+3. NUMERIC AGGREGATE (awk sum / average)
+================================================================
+# Average number of commits per PushEvent (payload.size), 10-core,
+# per-batch partial sums combined by a final awk:
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r "select(.type==\"PushEvent\") | .payload.size" | awk "{s+=\$1; n++} END{print s, n}"' sh | awk '{S+=$1; N+=$2} END{printf "sum=%d avg=%.3f n=%d\n", S, S/N, N}'
+sum=159502273 avg=3.053 n=52244295
+real	29m30.442s  user	316m24.260s  sys	18m41.221s
+# 159.5 M commits across 52.2 M pushes -> 3.05 commits per push on average.
+
+================================================================
+4. FILTERING COUNTS (grep -c)
+================================================================
+# Events whose repo name matches an AI/ML keyword (fast pre-filter;
+# keyword list agreed in DATASET.md), 10-core, batch counts summed:
+#   AIRE='"name":"[^"]*(llm|gpt|pytorch|tensorflow|langchain|diffus|transformer|huggingface|openai|neural|deep-learning|machine-learning|agentic|rag-)'
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | grep -c -iE "$AIRE"' sh | awk '{s+=$1} END{print s}'
+787912
+real	17m43.542s  user	184m33.870s  sys	11m43.668s
+# 787,912 events (0.92% of all activity) — the Phase 4 question's raw input.
+
+# PullRequestEvents only:
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | grep -c "$PRRE"' sh | awk '{s+=$1} END{print s}'
+6005006
+real	12m29.191s  user	98m10.478s  sys	15m10.599s
+# Exactly matches the jq event-type count above (6,005,006) — two
+# independent methods, identical answer.
+
+================================================================
+5. EXTRAS: cut -d',' -f and column -t (one hourly file, 267 K events)
+================================================================
+# Project a few JSON fields to CSV so classic column tools apply:
+$ time zcat 2024-01-15-15.json.gz | head -3 | jq -r '[.created_at,.type,.actor.login,.repo.name] | @csv'
+"2024-01-15T15:00:00Z","CreateEvent","prasham04","prasham04/SImon-game"
+"2024-01-15T15:00:00Z","CreateEvent","dependabot[bot]","dm-drogeriemarkt/lisa"
+"2024-01-15T15:00:00Z","PushEvent","abdelemjidessaid","abdelemjidessaid/alx-backend-python"
+real	0m0.005s  user	0m0.003s  sys	0m0.007s
+
+# Event-type counts for that hour via cut on the CSV field:
+$ time zcat 2024-01-15-15.json.gz | jq -r '[.created_at,.type,.repo.name] | @csv' | cut -d',' -f2 | sort | uniq -c | sort -nr | head -15
+ 169030 "PushEvent"
+  28616 "CreateEvent"
+  18272 "PullRequestEvent"
+  11687 "IssueCommentEvent"
+   9548 "WatchEvent"
+   7556 "DeleteEvent"
+   7217 "PullRequestReviewEvent"
+   4311 "PullRequestReviewCommentEvent"
+   4170 "IssuesEvent"
+   2373 "ForkEvent"
+   1247 "ReleaseEvent"
+    891 "PublicEvent"
+    815 "CommitCommentEvent"
+    724 "MemberEvent"
+    414 "GollumEvent"
+real	0m19.560s  user	0m27.597s  sys	0m1.800s
+
+# Same table aligned with column -t:
+$ time zcat 2024-01-15-15.json.gz | jq -r '.type' | sort | uniq -c | sort -nr | column -t
+169030  PushEvent
+28616   CreateEvent
+18272   PullRequestEvent
+11687   IssueCommentEvent
+9548    WatchEvent
+7556    DeleteEvent
+7217    PullRequestReviewEvent
+4311    PullRequestReviewCommentEvent
+4170    IssuesEvent
+2373    ForkEvent
+1247    ReleaseEvent
+891     PublicEvent
+815     CommitCommentEvent
+724     MemberEvent
+414     GollumEvent
+real	0m17.718s  user	0m25.868s  sys	0m1.661s
+
+================================================================
+NOTES / OBSERVATIONS (for the "Profiling" poster section)
+================================================================
+- Size: 552 files, 35 GiB compressed -> 273,494,892,306 bytes uncompressed
+  (254.7 GiB, ~7.3x compression), 85,339,282 events. Both course floors
+  cleared: ~55x the 5 GB size floor, 1.7x the 50 M row floor.
+
+- Wall-clock vs data size: ANY full single-stream pass costs ~38-39 min
+  (wc -c 38m29s, wc -l 38m37s) because gzip decompression is single-threaded
+  at ~118 MB/s of output — that is the hard floor for one core. CPU-heavy
+  passes cost far more: the jq event-type pass burned 315 CPU-minutes
+  (~5.3 h on one core).
+
+- Parallelism: fanning out per-file with xargs -P 10 cut the byte count from
+  38m29s to 13m26s (2.9x — decompression-bound, uneven file sizes, shared
+  box) and the jq passes from a projected ~5.3 h to ~30 min (~10x —
+  CPU-bound work parallelizes best). Same numbers either way; only the
+  wall-clock changes. This is the Phase 3 thesis in miniature: add workers,
+  keep the answer, shrink the wait.
+
+- Why streaming works where load-into-memory would not: every pipeline here
+  holds only one line/buffer in RAM per process (gzip+wc+jq is a few MB;
+  sort spills sorted runs to disk). Peak memory stayed flat while 273.5 GB
+  flowed through — on a 121 GiB machine where even the *compressed* dataset
+  fits in RAM but the JSON does not. Phase 2 shows pandas/Excel failing on
+  exactly this data for exactly this reason.
+
+- Self-consistency checks (all from independent commands):
+  * single-stream and 10-core byte counts agree exactly: 273,494,892,306.
+  * jq type counts sum to 85,339,283 vs wc -l 85,339,282 — off by exactly 1
+    because the last line of one file has no trailing newline (wc -l counts
+    newlines, jq counts JSON objects). Streaming tools agree to one byte.
+  * PullRequestEvent: 6,005,006 via jq AND via grep -c (exact match).
+  * PushEvent: 52,244,295 in the type table AND in the awk aggregate n.
+
+- Content findings: PushEvent dominates (61.2%); 8.27 M distinct actors,
+  13.21 M distinct repos (more repos than people); 3.05 commits per push;
+  AI/ML-keyword repos account for 787,912 events (0.92%) in this sample —
+  the starting point for the Phase 4 trend analysis.
+
+- Honesty caveats: shared host (~17 users; an ollama LLM server pinned ~2
+  of 20 cores throughout, load avg 4-13); all heavy commands ran under
+  nice -n 19 ionice -c3, so timings are conservative. Sampling is 1 day per
+  quarter (the 15th), so day-of-week varies across quarters — noted again
+  in Phase 4.

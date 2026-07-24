@@ -1,0 +1,11 @@
+# CS131 final project — analysis/environment libs (arm64, Python 3.12)
+pandas>=2.2
+pyarrow>=16          # parquet + efficient columnar / arrow
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+jupyterlab>=4.2      # browser notebook IDE
+ipykernel>=6.29
+ijson>=3.3           # streaming JSON parse (won't load whole file)
+tqdm>=4.66           # progress bars
+requests>=2.32

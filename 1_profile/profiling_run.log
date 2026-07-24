@@ -1,0 +1,30 @@
+=== CS131 Phase 1 profiling run ===
+host: spark-833c  date: 2026-07-21T22:39:42Z
+dataset: GH Archive, 1 day per quarter 2021-Q1..2026-Q3 (the 15th), 24 hourly files/day
+file inventory:
+$ time ls *.json.gz | wc -l
+552
+
+real	0m0.008s
+user	0m0.003s
+sys	0m0.008s
+
+================================================================
+0. PROVE THE SIZE FLOOR (> 5 GB and > 50 million rows)
+================================================================
+$ time du -ch *.json.gz | tail -1
+35G	total
+
+real	0m0.006s
+user	0m0.001s
+sys	0m0.008s
+
+$ time zcat *.json.gz | wc -c
+255715421404
+Terminated
+
+real	38m7.017s
+user	35m3.993s
+sys	6m42.694s
+
+$ time zcat *.json.gz | wc -l

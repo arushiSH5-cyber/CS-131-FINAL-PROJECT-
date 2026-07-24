@@ -1,0 +1,31 @@
+# Never commit raw big data — it stays in /tmp, scratch disk, or GCS
+*.json
+*.jsonl
+*.ndjson
+*.gz
+*.zip
+*.csv
+*.tsv
+*.parquet
+*.avro
+
+# But DO keep our small documented outputs / samples if we intentionally add them
+!sample_*.json
+!*_head.txt
+!*_result.txt
+
+# Virtualenv + raw data dir (never commit either)
+.venv/
+data/
+
+# Python / Spark junk
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+spark-warehouse/
+derby.log
+metastore_db/
+
+# OS junk
+.DS_Store
+Thumbs.db

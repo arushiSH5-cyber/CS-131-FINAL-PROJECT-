@@ -1,0 +1,154 @@
+=== CS131 Phase 1 profiling run, part 2 (parallel, 10 of 20 cores, nice 19) ===
+host: spark-833c  date: 2026-07-22T00:52:20Z
+
+================================================================
+0a. ROW COUNT — single stream, exact template command (> 50 M floor)
+================================================================
+$ time zcat *.json.gz | wc -l
+85339282
+
+real	38m37.140s
+user	37m1.694s
+sys	6m56.306s
+
+================================================================
+0b. UNCOMPRESSED SIZE — parallel (per-file zcat|wc -c, summed)
+================================================================
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | wc -c' sh | awk '{s+=$1} END{print s}'
+273494892306
+
+real	13m26.302s
+user	96m8.688s
+sys	16m26.164s
+
+================================================================
+1. PEEK AT THE SCHEMA (head / tail / jq)
+================================================================
+$ time zcat 2024-01-15-15.json.gz | head -1 | jq .
+{
+  "id": "34834865479",
+  "type": "CreateEvent",
+  "actor": {
+    "id": 140599107,
+    "login": "prasham04",
+    "display_login": "prasham04",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/prasham04",
+    "avatar_url": "https://avatars.githubusercontent.com/u/140599107?"
+  },
+  "repo": {
+    "id": 743589745,
+    "name": "prasham04/SImon-game",
+    "url": "https://api.github.com/repos/prasham04/SImon-game"
+  },
+  "payload": {
+    "ref": null,
+    "ref_type": "repository",
+    "master_branch": "main",
+    "description": null,
+    "pusher_type": "user"
+  },
+  "public": true,
+  "created_at": "2024-01-15T15:00:00Z"
+}
+
+real	0m0.013s
+user	0m0.008s
+sys	0m0.018s
+
+$ time zcat 2024-01-15-15.json.gz | head -1 | jq 'keys'
+[
+  "actor",
+  "created_at",
+  "id",
+  "payload",
+  "public",
+  "repo",
+  "type"
+]
+
+real	0m0.018s
+user	0m0.011s
+sys	0m0.015s
+
+$ time zcat 2024-01-15-15.json.gz | tail -1 | jq -c '{id,type,actor:.actor.login,repo:.repo.name,created_at}'
+{"id":"34836645420","type":"PullRequestReviewCommentEvent","actor":"nkanazawa1989","repo":"Qiskit/qiskit","created_at":"2024-01-15T15:56:31Z"}
+
+real	0m9.290s
+user	0m8.837s
+sys	0m1.712s
+
+================================================================
+2. TOP CATEGORIES / CARDINALITY — parallel over all 552 files
+================================================================
+# Event-type distribution (per-file jq|sort|uniq -c, merged with awk):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".type" | sort | uniq -c' sh | awk '{c[$2]+=$1} END{for(t in c) printf "%9d %s
+", c[t], t}' | sort -nr
+ 52244295 PushEvent
+ 10597330 CreateEvent
+  6005006 PullRequestEvent
+  3475321 WatchEvent
+  3474899 IssueCommentEvent
+  2602051 DeleteEvent
+  1846851 IssuesEvent
+  1728659 PullRequestReviewEvent
+  1130366 PullRequestReviewCommentEvent
+   951537 ForkEvent
+   439493 ReleaseEvent
+   250274 CommitCommentEvent
+   238793 PublicEvent
+   230248 MemberEvent
+   122078 GollumEvent
+     2082 DiscussionEvent
+
+real	30m4.864s
+user	315m28.205s
+sys	19m6.611s
+
+# Distinct actors (per-batch sorted-unique files, then one merge):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".actor.login" | LC_ALL=C sort -u > /tmp/prof_71M4/actors_$$.txt' sh && LC_ALL=C sort -mu /tmp/prof_71M4/actors_*.txt | wc -l
+8268278
+
+real	30m14.693s
+user	315m52.832s
+sys	19m5.323s
+
+# Distinct repos (same technique):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r ".repo.name" | LC_ALL=C sort -u > /tmp/prof_71M4/repos_$$.txt' sh && LC_ALL=C sort -mu /tmp/prof_71M4/repos_*.txt | wc -l
+13206596
+
+real	29m30.237s
+user	312m55.199s
+sys	19m13.276s
+
+================================================================
+3. NUMERIC AGGREGATE (awk) — commits per PushEvent, parallel
+================================================================
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | jq -r "select(.type==\"PushEvent\") | .payload.size" | awk "{s+=\$1; n++} END{print s, n}"' sh | awk '{S+=$1; N+=$2} END{printf "sum=%d avg=%.3f n=%d
+", S, S/N, N}'
+sum=159502273 avg=3.053 n=52244295
+
+real	29m30.442s
+user	316m24.260s
+sys	18m41.221s
+
+================================================================
+4. FILTERING COUNTS (grep -c) — parallel, per-batch counts summed
+================================================================
+# Events mentioning an AI/ML repo keyword (pre-filter; list in DATASET.md):
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | grep -c -iE "$AIRE"' sh | awk '{s+=$1} END{print s}'
+787912
+
+real	17m43.542s
+user	184m33.870s
+sys	11m43.668s
+
+# PullRequestEvents only:
+$ time ls *.json.gz | xargs -P 10 -n 28 sh -c 'zcat "$@" | grep -c "$PRRE"' sh | awk '{s+=$1} END{print s}'
+6005006
+
+real	12m29.191s
+user	98m10.478s
+sys	15m10.599s
+
+=== part 2 complete: 2026-07-22T04:14:06Z ===
