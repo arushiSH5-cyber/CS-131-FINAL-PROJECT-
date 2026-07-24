@@ -1,0 +1,241 @@
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+26/07/21 15:34:19 WARN Utils: Your hostname, spark-833c, resolves to a loopback address: 127.0.0.1; using 130.65.111.89 instead (on interface enP7s7)
+26/07/21 15:34:19 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+/home/ishigaki-cs6/final_project/.venv/lib/python3.12/site-packages/pyspark/testing/utils.py:127: FutureWarning: PySpark does not yet fully support pandas >= 3.0.0. Some features may not work correctly. It is recommended to use pandas < 3.0.0 for now.
+  require_minimum_pandas_version()
+26/07/21 15:34:22 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/07/21 15:34:38 WARN FileStreamSink: Assume no metadata directory. Error while looking for metadata directory in the path: data/2024-01-15-*.json.gz.
+java.io.FileNotFoundException: File data/2024-01-15-*.json.gz does not exist
+	at org.apache.hadoop.fs.RawLocalFileSystem.deprecatedGetFileStatus(RawLocalFileSystem.java:980)
+	at org.apache.hadoop.fs.RawLocalFileSystem.getFileLinkStatusInternal(RawLocalFileSystem.java:1301)
+	at org.apache.hadoop.fs.RawLocalFileSystem.getFileStatus(RawLocalFileSystem.java:970)
+	at org.apache.hadoop.fs.FilterFileSystem.getFileStatus(FilterFileSystem.java:462)
+	at org.apache.spark.sql.execution.streaming.sinks.FileStreamSink$.hasMetadata(FileStreamSink.scala:58)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:394)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.org$apache$spark$sql$catalyst$analysis$ResolveDataSource$$loadV1BatchSource(ResolveDataSource.scala:210)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.$anonfun$applyOrElse$2(ResolveDataSource.scala:62)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.applyOrElse(ResolveDataSource.scala:62)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.applyOrElse(ResolveDataSource.scala:46)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.$anonfun$resolveOperatorsUpWithPruning$3(AnalysisHelper.scala:139)
+	at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(origin.scala:107)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.$anonfun$resolveOperatorsUpWithPruning$1(AnalysisHelper.scala:139)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.allowInvokingTransformsInAnalyzer(AnalysisHelper.scala:416)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUpWithPruning(AnalysisHelper.scala:135)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUpWithPruning$(AnalysisHelper.scala:131)
+	at org.apache.spark.sql.catalyst.plans.logical.LogicalPlan.resolveOperatorsUpWithPruning(LogicalPlan.scala:37)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUp(AnalysisHelper.scala:112)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUp$(AnalysisHelper.scala:111)
+	at org.apache.spark.sql.catalyst.plans.logical.LogicalPlan.resolveOperatorsUp(LogicalPlan.scala:37)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.apply(ResolveDataSource.scala:46)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.apply(ResolveDataSource.scala:44)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$2(RuleExecutor.scala:248)
+	at scala.collection.LinearSeqOps.foldLeft(LinearSeq.scala:183)
+	at scala.collection.LinearSeqOps.foldLeft$(LinearSeq.scala:179)
+	at scala.collection.immutable.List.foldLeft(List.scala:79)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$1(RuleExecutor.scala:245)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$1$adapted(RuleExecutor.scala:237)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.execute(RuleExecutor.scala:237)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.super$execute(Analyzer.scala:438)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeSameContext$1(Analyzer.scala:438)
+	at org.apache.spark.sql.internal.SQLConf$.withExistingConf(SQLConf.scala:171)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.runWithSessionConf(Analyzer.scala:400)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.org$apache$spark$sql$catalyst$analysis$Analyzer$$executeSameContext(Analyzer.scala:438)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$execute$1(Analyzer.scala:433)
+	at org.apache.spark.sql.catalyst.analysis.AnalysisContext$.withNewAnalysisContext(Analyzer.scala:276)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.execute(Analyzer.scala:433)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.execute(Analyzer.scala:336)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$executeAndTrack$1(RuleExecutor.scala:207)
+	at org.apache.spark.sql.catalyst.QueryPlanningTracker$.withTracker(QueryPlanningTracker.scala:89)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.executeAndTrack(RuleExecutor.scala:207)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.resolveInFixedPoint(HybridAnalyzer.scala:273)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.$anonfun$apply$1(HybridAnalyzer.scala:82)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.withTrackedAnalyzerBridgeState(HybridAnalyzer.scala:117)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.apply(HybridAnalyzer.scala:75)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.runAnalysis$1(Analyzer.scala:368)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$2(Analyzer.scala:373)
+	at org.apache.spark.sql.internal.SQLConf$.withExistingConf(SQLConf.scala:171)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.runWithSessionConf(Analyzer.scala:400)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$1(Analyzer.scala:373)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:423)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:373)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$lazyAnalyzed$2(QueryExecution.scala:200)
+	at org.apache.spark.sql.catalyst.QueryPlanningTracker.measurePhase(QueryPlanningTracker.scala:148)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$3(QueryExecution.scala:410)
+	at org.apache.spark.sql.execution.QueryExecution.withQueryExecutionId(QueryExecution.scala:429)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$2(QueryExecution.scala:410)
+	at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:872)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$1(QueryExecution.scala:409)
+	at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:810)
+	at org.apache.spark.sql.execution.QueryExecution.executePhase(QueryExecution.scala:408)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$lazyAnalyzed$1(QueryExecution.scala:200)
+	at scala.util.Try$.apply(Try.scala:217)
+	at org.apache.spark.util.Utils$.doTryWithCallerStacktrace(Utils.scala:1407)
+	at org.apache.spark.util.LazyTry.tryT$lzycompute(LazyTry.scala:46)
+	at org.apache.spark.util.LazyTry.tryT(LazyTry.scala:46)
+	at org.apache.spark.util.LazyTry.get(LazyTry.scala:61)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$analyzed$1(QueryExecution.scala:212)
+	at org.apache.spark.sql.execution.QueryExecution.withAbortTransactionOnFailure(QueryExecution.scala:632)
+	at org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:212)
+	at org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:151)
+	at org.apache.spark.sql.classic.Dataset$.$anonfun$ofRows$1(Dataset.scala:114)
+	at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:810)
+	at org.apache.spark.sql.classic.Dataset$.ofRows(Dataset.scala:112)
+	at org.apache.spark.sql.classic.DataFrameReader.load(DataFrameReader.scala:109)
+	at org.apache.spark.sql.classic.DataFrameReader.load(DataFrameReader.scala:58)
+	at org.apache.spark.sql.DataFrameReader.json(DataFrameReader.scala:296)
+	at org.apache.spark.sql.classic.DataFrameReader.json(DataFrameReader.scala:150)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:184)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:108)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+[Stage 0:>                                                        (0 + 20) / 24][Stage 0:>                                                        (0 + 21) / 24][Stage 0:====>                                                    (2 + 20) / 24][Stage 0:=======>                                                 (3 + 20) / 24][Stage 0:=========>                                               (4 + 20) / 24][Stage 0:===========>                                             (5 + 19) / 24][Stage 0:==============>                                          (6 + 18) / 24][Stage 0:================>                                        (7 + 17) / 24][Stage 0:===================>                                     (8 + 16) / 24][Stage 0:=====================>                                   (9 + 15) / 24][Stage 0:=========================>                              (11 + 13) / 24][Stage 0:==============================>                         (13 + 11) / 24][Stage 0:================================>                       (14 + 10) / 24][Stage 0:===================================>                     (15 + 9) / 24][Stage 0:==========================================>              (18 + 6) / 24][Stage 0:=============================================>           (19 + 5) / 24][Stage 0:=================================================>       (21 + 3) / 24][Stage 0:====================================================>    (22 + 2) / 24]                                                                                
+=== events per type — one-day-2024-01-15 ===
+   3,682,194  PushEvent
+     553,099  CreateEvent
+     361,744  PullRequestEvent
+     220,234  IssueCommentEvent
+     202,448  WatchEvent
+     141,711  DeleteEvent
+     108,706  PullRequestReviewEvent
+      79,108  IssuesEvent
+      60,335  PullRequestReviewCommentEvent
+      46,549  ForkEvent
+      22,991  ReleaseEvent
+      15,759  PublicEvent
+      14,199  CommitCommentEvent
+      12,790  MemberEvent
+       6,434  GollumEvent
+   5,528,301  TOTAL
+wall-clock: 26.0s  (Spark local[*], 20 cores)
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+26/07/21 15:35:10 WARN Utils: Your hostname, spark-833c, resolves to a loopback address: 127.0.0.1; using 130.65.111.89 instead (on interface enP7s7)
+26/07/21 15:35:10 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+/home/ishigaki-cs6/final_project/.venv/lib/python3.12/site-packages/pyspark/testing/utils.py:127: FutureWarning: PySpark does not yet fully support pandas >= 3.0.0. Some features may not work correctly. It is recommended to use pandas < 3.0.0 for now.
+  require_minimum_pandas_version()
+26/07/21 15:35:12 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/07/21 15:35:22 WARN FileStreamSink: Assume no metadata directory. Error while looking for metadata directory in the path: data/*.json.gz.
+java.io.FileNotFoundException: File data/*.json.gz does not exist
+	at org.apache.hadoop.fs.RawLocalFileSystem.deprecatedGetFileStatus(RawLocalFileSystem.java:980)
+	at org.apache.hadoop.fs.RawLocalFileSystem.getFileLinkStatusInternal(RawLocalFileSystem.java:1301)
+	at org.apache.hadoop.fs.RawLocalFileSystem.getFileStatus(RawLocalFileSystem.java:970)
+	at org.apache.hadoop.fs.FilterFileSystem.getFileStatus(FilterFileSystem.java:462)
+	at org.apache.spark.sql.execution.streaming.sinks.FileStreamSink$.hasMetadata(FileStreamSink.scala:58)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:394)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.org$apache$spark$sql$catalyst$analysis$ResolveDataSource$$loadV1BatchSource(ResolveDataSource.scala:210)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.$anonfun$applyOrElse$2(ResolveDataSource.scala:62)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.applyOrElse(ResolveDataSource.scala:62)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.applyOrElse(ResolveDataSource.scala:46)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.$anonfun$resolveOperatorsUpWithPruning$3(AnalysisHelper.scala:139)
+	at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(origin.scala:107)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.$anonfun$resolveOperatorsUpWithPruning$1(AnalysisHelper.scala:139)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.allowInvokingTransformsInAnalyzer(AnalysisHelper.scala:416)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUpWithPruning(AnalysisHelper.scala:135)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUpWithPruning$(AnalysisHelper.scala:131)
+	at org.apache.spark.sql.catalyst.plans.logical.LogicalPlan.resolveOperatorsUpWithPruning(LogicalPlan.scala:37)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUp(AnalysisHelper.scala:112)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUp$(AnalysisHelper.scala:111)
+	at org.apache.spark.sql.catalyst.plans.logical.LogicalPlan.resolveOperatorsUp(LogicalPlan.scala:37)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.apply(ResolveDataSource.scala:46)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.apply(ResolveDataSource.scala:44)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$2(RuleExecutor.scala:248)
+	at scala.collection.LinearSeqOps.foldLeft(LinearSeq.scala:183)
+	at scala.collection.LinearSeqOps.foldLeft$(LinearSeq.scala:179)
+	at scala.collection.immutable.List.foldLeft(List.scala:79)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$1(RuleExecutor.scala:245)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$1$adapted(RuleExecutor.scala:237)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.execute(RuleExecutor.scala:237)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.super$execute(Analyzer.scala:438)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeSameContext$1(Analyzer.scala:438)
+	at org.apache.spark.sql.internal.SQLConf$.withExistingConf(SQLConf.scala:171)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.runWithSessionConf(Analyzer.scala:400)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.org$apache$spark$sql$catalyst$analysis$Analyzer$$executeSameContext(Analyzer.scala:438)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$execute$1(Analyzer.scala:433)
+	at org.apache.spark.sql.catalyst.analysis.AnalysisContext$.withNewAnalysisContext(Analyzer.scala:276)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.execute(Analyzer.scala:433)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.execute(Analyzer.scala:336)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$executeAndTrack$1(RuleExecutor.scala:207)
+	at org.apache.spark.sql.catalyst.QueryPlanningTracker$.withTracker(QueryPlanningTracker.scala:89)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.executeAndTrack(RuleExecutor.scala:207)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.resolveInFixedPoint(HybridAnalyzer.scala:273)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.$anonfun$apply$1(HybridAnalyzer.scala:82)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.withTrackedAnalyzerBridgeState(HybridAnalyzer.scala:117)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.apply(HybridAnalyzer.scala:75)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.runAnalysis$1(Analyzer.scala:368)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$2(Analyzer.scala:373)
+	at org.apache.spark.sql.internal.SQLConf$.withExistingConf(SQLConf.scala:171)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.runWithSessionConf(Analyzer.scala:400)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$1(Analyzer.scala:373)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:423)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:373)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$lazyAnalyzed$2(QueryExecution.scala:200)
+	at org.apache.spark.sql.catalyst.QueryPlanningTracker.measurePhase(QueryPlanningTracker.scala:148)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$3(QueryExecution.scala:410)
+	at org.apache.spark.sql.execution.QueryExecution.withQueryExecutionId(QueryExecution.scala:429)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$2(QueryExecution.scala:410)
+	at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:872)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$1(QueryExecution.scala:409)
+	at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:810)
+	at org.apache.spark.sql.execution.QueryExecution.executePhase(QueryExecution.scala:408)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$lazyAnalyzed$1(QueryExecution.scala:200)
+	at scala.util.Try$.apply(Try.scala:217)
+	at org.apache.spark.util.Utils$.doTryWithCallerStacktrace(Utils.scala:1407)
+	at org.apache.spark.util.LazyTry.tryT$lzycompute(LazyTry.scala:46)
+	at org.apache.spark.util.LazyTry.tryT(LazyTry.scala:46)
+	at org.apache.spark.util.LazyTry.get(LazyTry.scala:61)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$analyzed$1(QueryExecution.scala:212)
+	at org.apache.spark.sql.execution.QueryExecution.withAbortTransactionOnFailure(QueryExecution.scala:632)
+	at org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:212)
+	at org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:151)
+	at org.apache.spark.sql.classic.Dataset$.$anonfun$ofRows$1(Dataset.scala:114)
+	at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:810)
+	at org.apache.spark.sql.classic.Dataset$.ofRows(Dataset.scala:112)
+	at org.apache.spark.sql.classic.DataFrameReader.load(DataFrameReader.scala:109)
+	at org.apache.spark.sql.classic.DataFrameReader.load(DataFrameReader.scala:58)
+	at org.apache.spark.sql.DataFrameReader.json(DataFrameReader.scala:296)
+	at org.apache.spark.sql.classic.DataFrameReader.json(DataFrameReader.scala:150)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:184)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:108)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+[Stage 0:>                                                        (0 + 0) / 552][Stage 0:>                                                       (0 + 20) / 552][Stage 0:>                                                       (0 + 27) / 552][Stage 0:==>                                                    (29 + 21) / 552][Stage 0:=====>                                                 (53 + 20) / 552][Stage 0:=======>                                               (72 + 22) / 552][Stage 0:=========>                                             (97 + 21) / 552][Stage 0:===========>                                          (121 + 21) / 552][Stage 0:==============>                                       (148 + 20) / 552][Stage 0:================>                                     (173 + 20) / 552][Stage 0:===================>                                  (197 + 20) / 552][Stage 0:=====================>                                (220 + 20) / 552][Stage 0:========================>                             (246 + 21) / 552][Stage 0:==========================>                           (269 + 23) / 552][Stage 0:============================>                         (293 + 21) / 552][Stage 0:===============================>                      (321 + 20) / 552][Stage 0:==================================>                   (348 + 20) / 552][Stage 0:====================================>                 (373 + 20) / 552][Stage 0:=======================================>              (404 + 20) / 552][Stage 0:=========================================>            (428 + 20) / 552][Stage 0:============================================>         (457 + 20) / 552][Stage 0:===============================================>      (483 + 20) / 552][Stage 0:==================================================>   (513 + 20) / 552][Stage 0:====================================================> (539 + 13) / 552]                                                                                [Stage 1:>                                                       (0 + 20) / 371][Stage 1:>                                                       (1 + 20) / 371][Stage 1:>                                                       (2 + 20) / 371][Stage 1:>                                                       (3 + 20) / 371][Stage 1:>                                                       (5 + 20) / 371][Stage 1:>                                                       (6 + 20) / 371][Stage 1:=>                                                      (7 + 20) / 371][Stage 1:=>                                                      (9 + 20) / 371][Stage 1:=>                                                     (10 + 20) / 371][Stage 1:=>                                                     (11 + 20) / 371][Stage 1:==>                                                    (14 + 20) / 371][Stage 1:==>                                                    (15 + 20) / 371][Stage 1:==>                                                    (16 + 20) / 371][Stage 1:==>                                                    (17 + 20) / 371][Stage 1:==>                                                    (18 + 20) / 371][Stage 1:==>                                                    (19 + 20) / 371][Stage 1:==>                                                    (20 + 20) / 371][Stage 1:===>                                                   (21 + 20) / 371][Stage 1:===>                                                   (22 + 20) / 371][Stage 1:===>                                                   (23 + 20) / 371][Stage 1:===>                                                   (24 + 20) / 371][Stage 1:===>                                                   (25 + 20) / 371][Stage 1:===>                                                   (26 + 20) / 371][Stage 1:====>                                                  (27 + 20) / 371][Stage 1:====>                                                  (28 + 20) / 371][Stage 1:====>                                                  (30 + 20) / 371][Stage 1:====>                                                  (31 + 20) / 371][Stage 1:====>                                                  (32 + 20) / 371][Stage 1:=====>                                                 (34 + 20) / 371][Stage 1:=====>                                                 (35 + 20) / 371][Stage 1:=====>                                                 (36 + 20) / 371][Stage 1:=====>                                                 (37 + 20) / 371][Stage 1:=====>                                                 (38 + 20) / 371][Stage 1:=====>                                                 (39 + 20) / 371][Stage 1:=====>                                                 (40 + 20) / 371][Stage 1:======>                                                (41 + 20) / 371][Stage 1:======>                                                (42 + 20) / 371][Stage 1:======>                                                (43 + 20) / 371][Stage 1:======>                                                (44 + 20) / 371][Stage 1:======>                                                (45 + 20) / 371][Stage 1:======>                                                (46 + 20) / 371][Stage 1:=======>                                               (49 + 20) / 371][Stage 1:=======>                                               (50 + 20) / 371][Stage 1:=======>                                               (52 + 20) / 371][Stage 1:=======>                                               (53 + 20) / 371][Stage 1:========>                                              (54 + 20) / 371][Stage 1:========>                                              (56 + 20) / 371][Stage 1:========>                                              (57 + 20) / 371][Stage 1:========>                                              (58 + 20) / 371][Stage 1:========>                                              (59 + 20) / 371][Stage 1:========>                                              (60 + 20) / 371][Stage 1:=========>                                             (63 + 20) / 371][Stage 1:=========>                                             (65 + 20) / 371][Stage 1:=========>                                             (66 + 20) / 371][Stage 1:=========>                                             (67 + 20) / 371][Stage 1:==========>                                            (68 + 20) / 371][Stage 1:==========>                                            (69 + 20) / 371][Stage 1:==========>                                            (70 + 20) / 371][Stage 1:==========>                                            (71 + 20) / 371][Stage 1:==========>                                            (72 + 20) / 371][Stage 1:==========>                                            (73 + 20) / 371][Stage 1:==========>                                            (74 + 20) / 371][Stage 1:===========>                                           (75 + 20) / 371][Stage 1:===========>                                           (77 + 20) / 371][Stage 1:===========>                                           (78 + 20) / 371][Stage 1:===========>                                           (79 + 20) / 371][Stage 1:===========>                                           (80 + 20) / 371][Stage 1:============>                                          (81 + 20) / 371][Stage 1:============>                                          (82 + 20) / 371][Stage 1:============>                                          (84 + 20) / 371][Stage 1:============>                                          (86 + 20) / 371][Stage 1:============>                                          (87 + 20) / 371][Stage 1:=============>                                         (91 + 20) / 371][Stage 1:=============>                                         (92 + 20) / 371][Stage 1:=============>                                         (93 + 20) / 371][Stage 1:=============>                                         (94 + 20) / 371][Stage 1:==============>                                        (96 + 20) / 371][Stage 1:==============>                                        (97 + 20) / 371][Stage 1:==============>                                        (98 + 20) / 371][Stage 1:==============>                                        (99 + 20) / 371][Stage 1:==============>                                       (100 + 20) / 371][Stage 1:==============>                                       (101 + 20) / 371][Stage 1:==============>                                       (102 + 20) / 371][Stage 1:===============>                                      (104 + 20) / 371][Stage 1:===============>                                      (105 + 20) / 371][Stage 1:===============>                                      (106 + 20) / 371][Stage 1:===============>                                      (107 + 20) / 371][Stage 1:===============>                                      (109 + 20) / 371][Stage 1:================>                                     (110 + 20) / 371][Stage 1:================>                                     (111 + 20) / 371][Stage 1:================>                                     (112 + 20) / 371][Stage 1:================>                                     (113 + 20) / 371][Stage 1:================>                                     (114 + 20) / 371][Stage 1:================>                                     (115 + 20) / 371][Stage 1:=================>                                    (117 + 20) / 371][Stage 1:=================>                                    (118 + 20) / 371][Stage 1:=================>                                    (120 + 20) / 371][Stage 1:=================>                                    (121 + 20) / 371][Stage 1:=================>                                    (122 + 20) / 371][Stage 1:=================>                                    (123 + 20) / 371][Stage 1:==================>                                   (124 + 20) / 371][Stage 1:==================>                                   (125 + 20) / 371][Stage 1:==================>                                   (126 + 20) / 371][Stage 1:==================>                                   (127 + 20) / 371][Stage 1:==================>                                   (129 + 20) / 371][Stage 1:==================>                                   (130 + 20) / 371][Stage 1:===================>                                  (131 + 20) / 371][Stage 1:===================>                                  (132 + 20) / 371][Stage 1:===================>                                  (133 + 20) / 371][Stage 1:===================>                                  (135 + 20) / 371][Stage 1:===================>                                  (137 + 20) / 371][Stage 1:====================>                                 (140 + 20) / 371][Stage 1:====================>                                 (141 + 20) / 371][Stage 1:====================>                                 (142 + 20) / 371][Stage 1:====================>                                 (143 + 20) / 371][Stage 1:====================>                                 (144 + 20) / 371][Stage 1:=====================>                                (145 + 20) / 371][Stage 1:=====================>                                (146 + 20) / 371][Stage 1:=====================>                                (147 + 20) / 371][Stage 1:=====================>                                (148 + 20) / 371][Stage 1:=====================>                                (150 + 20) / 371][Stage 1:======================>                               (152 + 20) / 371][Stage 1:======================>                               (154 + 20) / 371][Stage 1:======================>                               (156 + 20) / 371][Stage 1:======================>                               (157 + 20) / 371][Stage 1:======================>                               (158 + 20) / 371][Stage 1:=======================>                              (159 + 20) / 371][Stage 1:=======================>                              (160 + 20) / 371][Stage 1:=======================>                              (161 + 20) / 371][Stage 1:=======================>                              (162 + 20) / 371][Stage 1:=======================>                              (163 + 20) / 371][Stage 1:=======================>                              (164 + 20) / 371][Stage 1:========================>                             (166 + 20) / 371][Stage 1:========================>                             (168 + 20) / 371][Stage 1:========================>                             (169 + 20) / 371][Stage 1:========================>                             (171 + 20) / 371][Stage 1:=========================>                            (172 + 20) / 371][Stage 1:=========================>                            (173 + 20) / 371][Stage 1:=========================>                            (174 + 20) / 371][Stage 1:=========================>                            (176 + 20) / 371][Stage 1:=========================>                            (177 + 20) / 371][Stage 1:=========================>                            (178 + 20) / 371][Stage 1:==========================>                           (179 + 20) / 371][Stage 1:==========================>                           (181 + 20) / 371][Stage 1:==========================>                           (182 + 20) / 371][Stage 1:==========================>                           (184 + 20) / 371][Stage 1:===========================>                          (186 + 20) / 371][Stage 1:===========================>                          (187 + 20) / 371][Stage 1:===========================>                          (189 + 20) / 371][Stage 1:===========================>                          (190 + 20) / 371][Stage 1:===========================>                          (191 + 20) / 371][Stage 1:===========================>                          (192 + 20) / 371][Stage 1:============================>                         (195 + 20) / 371][Stage 1:============================>                         (197 + 20) / 371][Stage 1:============================>                         (198 + 20) / 371][Stage 1:=============================>                        (200 + 20) / 371][Stage 1:=============================>                        (201 + 21) / 371][Stage 1:=============================>                        (202 + 20) / 371][Stage 1:=============================>                        (203 + 20) / 371][Stage 1:=============================>                        (205 + 20) / 371][Stage 1:==============================>                       (208 + 20) / 371][Stage 1:==============================>                       (209 + 20) / 371][Stage 1:==============================>                       (211 + 20) / 371][Stage 1:==============================>                       (212 + 20) / 371][Stage 1:===============================>                      (213 + 20) / 371][Stage 1:===============================>                      (214 + 20) / 371][Stage 1:===============================>                      (215 + 20) / 371][Stage 1:===============================>                      (217 + 20) / 371][Stage 1:===============================>                      (218 + 20) / 371][Stage 1:===============================>                      (219 + 20) / 371][Stage 1:================================>                     (220 + 20) / 371][Stage 1:================================>                     (221 + 20) / 371][Stage 1:================================>                     (222 + 20) / 371][Stage 1:================================>                     (223 + 20) / 371][Stage 1:================================>                     (224 + 20) / 371][Stage 1:================================>                     (225 + 20) / 371][Stage 1:================================>                     (226 + 20) / 371][Stage 1:=================================>                    (228 + 20) / 371][Stage 1:=================================>                    (229 + 20) / 371][Stage 1:=================================>                    (230 + 20) / 371][Stage 1:=================================>                    (231 + 20) / 371][Stage 1:=================================>                    (232 + 20) / 371][Stage 1:==================================>                   (234 + 21) / 371][Stage 1:==================================>                   (235 + 20) / 371][Stage 1:==================================>                   (236 + 20) / 371][Stage 1:==================================>                   (237 + 20) / 371][Stage 1:==================================>                   (239 + 20) / 371][Stage 1:==================================>                   (240 + 20) / 371][Stage 1:===================================>                  (242 + 20) / 371][Stage 1:===================================>                  (243 + 20) / 371][Stage 1:===================================>                  (244 + 20) / 371][Stage 1:===================================>                  (247 + 20) / 371][Stage 1:====================================>                 (249 + 20) / 371][Stage 1:====================================>                 (250 + 20) / 371][Stage 1:====================================>                 (251 + 20) / 371][Stage 1:====================================>                 (252 + 20) / 371][Stage 1:====================================>                 (254 + 20) / 371][Stage 1:=====================================>                (255 + 20) / 371][Stage 1:=====================================>                (256 + 20) / 371][Stage 1:=====================================>                (257 + 20) / 371][Stage 1:=====================================>                (258 + 20) / 371][Stage 1:=====================================>                (259 + 20) / 371][Stage 1:=====================================>                (261 + 20) / 371][Stage 1:======================================>               (262 + 20) / 371][Stage 1:======================================>               (264 + 20) / 371][Stage 1:======================================>               (265 + 20) / 371][Stage 1:======================================>               (266 + 20) / 371][Stage 1:======================================>               (267 + 20) / 371][Stage 1:=======================================>              (268 + 20) / 371][Stage 1:=======================================>              (269 + 20) / 371][Stage 1:=======================================>              (270 + 20) / 371][Stage 1:=======================================>              (271 + 20) / 371][Stage 1:=======================================>              (273 + 20) / 371][Stage 1:=======================================>              (274 + 20) / 371][Stage 1:========================================>             (278 + 20) / 371][Stage 1:========================================>             (279 + 20) / 371][Stage 1:========================================>             (280 + 20) / 371][Stage 1:========================================>             (281 + 20) / 371][Stage 1:=========================================>            (282 + 20) / 371][Stage 1:=========================================>            (283 + 20) / 371][Stage 1:=========================================>            (284 + 20) / 371][Stage 1:=========================================>            (285 + 20) / 371][Stage 1:=========================================>            (286 + 20) / 371][Stage 1:=========================================>            (287 + 20) / 371][Stage 1:=========================================>            (288 + 20) / 371][Stage 1:==========================================>           (290 + 20) / 371][Stage 1:==========================================>           (292 + 20) / 371][Stage 1:==========================================>           (293 + 20) / 371][Stage 1:==========================================>           (294 + 20) / 371][Stage 1:==========================================>           (295 + 20) / 371][Stage 1:===========================================>          (296 + 20) / 371][Stage 1:===========================================>          (297 + 20) / 371][Stage 1:===========================================>          (298 + 20) / 371][Stage 1:===========================================>          (299 + 20) / 371][Stage 1:===========================================>          (300 + 20) / 371][Stage 1:===========================================>          (301 + 20) / 371][Stage 1:===========================================>          (302 + 20) / 371][Stage 1:============================================>         (303 + 20) / 371][Stage 1:============================================>         (304 + 20) / 371][Stage 1:============================================>         (305 + 20) / 371][Stage 1:============================================>         (306 + 20) / 371][Stage 1:============================================>         (307 + 20) / 371][Stage 1:============================================>         (308 + 20) / 371][Stage 1:============================================>         (309 + 20) / 371][Stage 1:=============================================>        (310 + 20) / 371][Stage 1:=============================================>        (311 + 20) / 371][Stage 1:=============================================>        (312 + 20) / 371][Stage 1:=============================================>        (313 + 20) / 371][Stage 1:=============================================>        (314 + 20) / 371][Stage 1:=============================================>        (316 + 20) / 371][Stage 1:==============================================>       (317 + 20) / 371][Stage 1:==============================================>       (318 + 20) / 371][Stage 1:==============================================>       (319 + 20) / 371][Stage 1:==============================================>       (320 + 20) / 371][Stage 1:==============================================>       (321 + 20) / 371][Stage 1:==============================================>       (322 + 20) / 371][Stage 1:===============================================>      (323 + 20) / 371][Stage 1:===============================================>      (324 + 20) / 371][Stage 1:===============================================>      (325 + 20) / 371][Stage 1:===============================================>      (326 + 20) / 371][Stage 1:===============================================>      (327 + 20) / 371][Stage 1:===============================================>      (328 + 20) / 371][Stage 1:===============================================>      (329 + 20) / 371][Stage 1:================================================>     (330 + 20) / 371][Stage 1:================================================>     (331 + 20) / 371][Stage 1:================================================>     (332 + 20) / 371][Stage 1:================================================>     (334 + 20) / 371][Stage 1:================================================>     (335 + 20) / 371][Stage 1:================================================>     (336 + 20) / 371][Stage 1:=================================================>    (337 + 20) / 371][Stage 1:=================================================>    (338 + 20) / 371][Stage 1:=================================================>    (339 + 20) / 371][Stage 1:=================================================>    (340 + 20) / 371][Stage 1:=================================================>    (341 + 20) / 371][Stage 1:=================================================>    (343 + 20) / 371][Stage 1:==================================================>   (344 + 20) / 371][Stage 1:==================================================>   (345 + 20) / 371][Stage 1:==================================================>   (346 + 20) / 371][Stage 1:==================================================>   (347 + 20) / 371][Stage 1:==================================================>   (348 + 20) / 371][Stage 1:==================================================>   (349 + 20) / 371][Stage 1:==================================================>   (350 + 20) / 371][Stage 1:===================================================>  (351 + 20) / 371][Stage 1:===================================================>  (352 + 19) / 371][Stage 1:===================================================>  (353 + 18) / 371][Stage 1:===================================================>  (355 + 16) / 371][Stage 1:===================================================>  (356 + 15) / 371][Stage 1:===================================================>  (357 + 14) / 371][Stage 1:====================================================> (358 + 13) / 371][Stage 1:====================================================> (359 + 12) / 371][Stage 1:====================================================> (360 + 11) / 371][Stage 1:=====================================================> (362 + 9) / 371][Stage 1:=====================================================> (364 + 7) / 371][Stage 1:======================================================>(365 + 6) / 371][Stage 1:======================================================>(367 + 4) / 371][Stage 1:======================================================>(369 + 2) / 371][Stage 1:======================================================>(370 + 1) / 371]                                                                                
+=== events per type — full-23-days ===
+  52,244,295  PushEvent
+  10,597,330  CreateEvent
+   6,005,006  PullRequestEvent
+   3,475,321  WatchEvent
+   3,474,899  IssueCommentEvent
+   2,602,051  DeleteEvent
+   1,846,851  IssuesEvent
+   1,728,659  PullRequestReviewEvent
+   1,130,366  PullRequestReviewCommentEvent
+     951,537  ForkEvent
+     439,493  ReleaseEvent
+     250,274  CommitCommentEvent
+     238,793  PublicEvent
+     230,248  MemberEvent
+     122,078  GollumEvent
+       2,082  DiscussionEvent
+  85,339,283  TOTAL
+wall-clock: 200.4s  (Spark local[*], 20 cores)

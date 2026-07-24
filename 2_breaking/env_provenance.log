@@ -1,0 +1,37 @@
+=== environment provenance — captured 2026-07-21T23:21:20Z ===
+$ hostname && uname -mr
+spark-833c
+6.17.0-1014-nvidia aarch64
+
+$ nproc
+20
+
+$ free -g | head -2
+               total        used        free      shared  buff/cache   available
+Mem:             121          71           6           0          44          49
+
+$ .venv/bin/python --version
+Python 3.12.3
+
+$ .venv/bin/pip list | grep -iE '^(pandas|pyspark|numpy) '
+numpy                     2.5.1
+pandas                    3.0.3
+pyspark                   4.2.0
+
+$ jq --version
+jq-1.7
+
+$ java -version
+openjdk version "21.0.11" 2026-04-21
+
+$ ls -l data/2024-01-15-15.json.gz data/day.json data/excel_rowcap.csv
+-rw-rw-r-- 1 ishigaki-cs6 ishigaki-cs6   135661600 Jul 21 15:17 data/2024-01-15-15.json.gz
+-rw-rw-r-- 1 ishigaki-cs6 ishigaki-cs6 18927242109 Jul 21 15:26 data/day.json
+-rw-rw-r-- 1 ishigaki-cs6 ishigaki-cs6   148244168 Jul 21 15:28 data/excel_rowcap.csv
+
+$ ls data/*.json.gz | wc -l
+552
+
+$ gzip -l data/2024-01-15-15.json.gz
+         compressed        uncompressed  ratio uncompressed_name
+          135661600          1004701772  86.5% data/2024-01-15-15.json

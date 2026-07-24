@@ -1,0 +1,135 @@
+CS 131 Final Project — Phase 2: The Breaking Point
+Goal: make the in-memory tools fail on purpose, reproducibly, and document it.
+Screenshots go in ./screenshots/ and are referenced by filename below.
+Reproduction steps for every screenshot: see SCREENSHOT_GUIDE.md.
+Experiment code committed alongside: phase2_prep.sh, pandas_break.sh, spark_agg.py.
+Raw timed outputs: phase2_prep.log, pandas_break.log, cli_day_agg.log, spark_agg.log.
+Environment numbers below are captured in env_provenance.log.
+All sizes are decimal (GB = 10^9 bytes); GiB noted where a tool reports binary units.
+
+Machine: NVIDIA DGX Spark (spark-833c), aarch64, 20 cores, 121 GiB unified memory
+Python 3.12.3 / pandas 3.0.3 / PySpark 4.2.0 (local[*]) / jq 1.7 — run 2026-07-21
+Dataset: GH Archive, 1 day per quarter 2021-Q1..2026-Q3 (the 15th), 552 hourly
+.json.gz files, 37.3 GB compressed (34.8 GiB), ~273.5 GB uncompressed,
+85,339,283 events (verified by Spark full count; matches Phase 1 wc -l).
+
+Format note: the dataset's native format is gzip NDJSON (one JSON object per
+line), not CSV — so the load-into-memory call under test is
+pd.read_json(..., lines=True), the direct equivalent of the assignment's
+pd.read_csv() for this data. Producing a CSV just to feed read_csv would
+itself require a full streaming pass and would discard the nested
+actor/repo/payload fields.
+
+================================================================
+A. EXCEL — hits the row cap / won't open
+================================================================
+The raw hourly files are gzipped JSON — Excel cannot open them at all. The
+fair test: flatten 8 hours of 2024-01-15 to a 5-column CSV and open that.
+
+Build commands (header line + jq flatten of id/type/actor/repo/created_at):
+  $ echo 'id,type,actor,repo,created_at' > excel_rowcap.csv
+  $ time zcat 2024-01-15-{0..7}.json.gz \
+      | jq -r '[.id,.type,.actor.login,.repo.name,.created_at] | @csv' >> excel_rowcap.csv
+  real 1m37.384s        -> data/excel_rowcap.csv, 148,244,168 bytes (148 MB)
+
+Record:
+  - Rows in the file we tried to open:   1,612,732 (`wc -l`; 1 header + 1,612,731 events)
+  - Excel's row limit:                   1,048,576 (hard sheet cap, Excel 2007+)
+  - What Excel actually does:            loads exactly 1,048,575 events + header,
+                                         shows "File not loaded completely.",
+                                         silently DROPS the other 564,156 rows
+                                         = 35% of the data — a *silent* data loss
+  - Note: 8 hours of ONE day already breaks it; a full day (5.5 M events) is 5.3x
+    the cap, and our full dataset (85.3 M events) is 81x the cap.
+  - Screenshot:  screenshots/excel_rowcap.png   (steps: SCREENSHOT_GUIDE.md §A)
+
+================================================================
+B. PANDAS — out of memory
+================================================================
+This box has 121 GiB unified memory, so we measured pandas two ways: its real
+memory appetite (uncapped, one hour) and a reproducible crash (one day under
+an 8 GB cap = a typical laptop).
+
+Experiment 1 — memory appetite, ONE HOUR uncapped (2024-01-15-15.json.gz,
+135.7 MB gz / 1.00 GB raw JSON = 1,004,701,772 bytes, 266,871 events):
+  $ /usr/bin/time -v .venv/bin/python -c \
+      'import pandas as pd; df = pd.read_json("data/2024-01-15-15.json.gz", lines=True); print(df.shape)'
+  (266871, 8)
+  Elapsed (wall clock): 0:37.32
+  Maximum resident set size: 14,018,704 kB  =  13.4 GiB  =  14.4 GB
+  -> pandas needs ~14x the raw JSON size in RAM (14.36 GB / 1.00 GB = 14.3x;
+     nested actor/repo/payload objects become per-row Python dicts).
+
+  Extrapolation (measured 14.3x amplification):
+    one day    (18.9 GB JSON)   -> ~270 GB RAM   > 121 GiB box  -> impossible here
+    full 23 d  (273.5 GB JSON)  -> ~3.9 TB RAM                  -> impossible anywhere near us
+
+Experiment 2 — ONE DAY under an 8 GB cap  ->  the crash (screenshot):
+  day.json = all 24 hours of 2024-01-15 uncompressed = 18,927,242,109 bytes
+  (18.9 GB), 5,528,301 events.
+  $ ( ulimit -v 8000000;   # ~8 GB virtual-memory cap for THIS subshell
+      .venv/bin/python -c 'import pandas as pd; df = pd.read_json("data/day.json", lines=True); print(df.shape)' )
+  Traceback (most recent call last):
+    File "<string>", line 1, in <module>
+    File ".../pandas/io/json/_json.py", line 829, in read_json
+      json_reader = JsonReader( ...
+    File ".../pandas/io/json/_json.py", line 936, in __init__
+      self.data = data.read()
+                  ^^^^^^^^^^^
+  MemoryError
+  exit code: 1
+
+  Record:
+  - Machine RAM:               121 GiB (capped to 8 GB for reproducibility)
+  - File size on disk:         18.9 GB (one day, uncompressed NDJSON)
+  - Outcome:                   MemoryError — pandas dies inside data.read(),
+                               i.e. while slurping raw bytes, BEFORE parsing
+                               a single row. Load-into-memory fails at step 0.
+  - Peak memory before crash:  ~8 GB (the cap; watch it climb with `free -h`)
+  - Screenshot:  screenshots/pandas_oom.png   (steps: SCREENSHOT_GUIDE.md §B)
+
+================================================================
+C. SAME AGGREGATION, TWO WAYS (benchmark table)
+================================================================
+Aggregation: count events per type (the Phase 1 / Phase 3 aggregation).
+Same data, three tools. PySpark code: spark_agg.py, invoked as
+  $ .venv/bin/python spark_agg.py 'data/2024-01-15-*.json.gz' one-day
+  $ .venv/bin/python spark_agg.py 'data/*.json.gz' full-23-days
+
+ONE DAY — 2024-01-15, 5,528,301 events, 18.9 GB raw JSON:
+| Method           | Tool                  | Wall-clock | Peak memory   | Completed?                          |
+|------------------|-----------------------|-----------:|---------------|-------------------------------------|
+| Load-into-memory | pandas (8 GB cap)     |     (dies) | 8 GB cap hit  | NO — MemoryError                    |
+| Load-into-memory | pandas (uncapped)     |          — | ~270 GB needed| not attempted — extrapolated (14.3x)|
+| Streaming        | jq | sort | uniq -c   |   5m34.8s  | ~MB, constant | yes                                 |
+| Distributed      | PySpark local[*] (20c)|      26.0s | bounded/core  | yes                                 |
+
+FULL DATASET — 23 days, 85,339,283 events, 37.3 GB gz (~273.5 GB raw):
+| Method           | Tool                  | Wall-clock | Completed?                    |
+|------------------|-----------------------|-----------:|-------------------------------|
+| Load-into-memory | pandas                |          — | NO — would need ~3.9 TB RAM   |
+| Streaming        | zcat | jq | uniq -c   | see 1_profile/profiling.txt (same command over all 552 files) |
+| Distributed      | PySpark local[*] (20c)|     200.4s | yes                           |
+
+Cross-check: Spark's one-day TOTAL (5,528,301) equals `wc -l day.json` exactly,
+and both tools produce identical per-type counts (PushEvent 3,682,194, ...).
+Full-set per-type counts (Spark): PushEvent 52,244,295 (61%), CreateEvent
+10,597,330, PullRequestEvent 6,005,006, WatchEvent 3,475,321, ...
+
+================================================================
+NOTES (for the "Breaking" poster section)
+================================================================
+- One-sentence takeaway: in-memory tools fail BEFORE the analysis even starts —
+  Excel silently throws away 35% of the rows, pandas dies just *reading* the
+  bytes — because both must hold everything at once, while streaming (constant
+  memory) and distributed (bounded memory per core) tools finish the identical
+  aggregation in minutes/seconds.
+- Excel's failure is the scariest: it is SILENT. One dialog click and you
+  compute on 65% of the data without knowing it.
+- pandas' ~14x memory amplification is the real killer: 1 GB of JSON needs
+  ~14 GB of RAM, so even this 121 GiB machine cannot load ONE DAY (18.9 GB) of
+  the public GitHub timeline — and RAM ceilings, unlike datasets, don't grow
+  81x. The failure is architectural, not a hardware shortfall.
+- Speedups on one day: Spark local[*] is ~13x faster than the single-core CLI
+  stream (26 s vs 5m35s on 20 cores) and both use bounded memory; Phase 3 shows
+  the same job scaling across a Dataproc cluster (1 -> 2 -> 4 workers).

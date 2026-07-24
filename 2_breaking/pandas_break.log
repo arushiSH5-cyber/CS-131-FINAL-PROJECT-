@@ -1,0 +1,32 @@
+===== Experiment 1: pandas memory appetite, ONE HOUR (uncapped) =====
+$ /usr/bin/time -v .venv/bin/python -c 'import pandas as pd; df = pd.read_json("data/2024-01-15-15.json.gz", lines=True); print(df.shape)'
+(266871, 8)
+	Command being timed: ".venv/bin/python -c import pandas as pd; df = pd.read_json("data/2024-01-15-15.json.gz", lines=True); print(df.shape)"
+	User time (seconds): 20.72
+	System time (seconds): 17.28
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:37.32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 14018704
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 486
+	Minor (reclaiming a frame) page faults: 5226316
+	Page size (bytes): 4096
+	Exit status: 0
+
+===== Experiment 2: pandas on ONE DAY under 8 GB cap  ->  OOM =====
+$ ( ulimit -v 8000000; python -c 'import pandas as pd; df = pd.read_json("data/day.json", lines=True); print(df.shape)' )
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/home/ishigaki-cs6/final_project/.venv/lib/python3.12/site-packages/pandas/io/json/_json.py", line 829, in read_json
+    json_reader = JsonReader(
+                  ^^^^^^^^^^^
+  File "/home/ishigaki-cs6/final_project/.venv/lib/python3.12/site-packages/pandas/io/json/_json.py", line 936, in __init__
+    self.data = data.read()
+                ^^^^^^^^^^^
+MemoryError
+exit code: 1
+
+done

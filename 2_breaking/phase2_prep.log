@@ -1,0 +1,19 @@
+== build day.json (24 hourly files, uncompressed) ==
+
+real	2m42.187s
+user	2m28.261s
+sys	0m11.404s
+-rw-rw-r-- 1 ishigaki-cs6 ishigaki-cs6 18927242109 Jul 21 15:26 day.json
+5528301 day.json
+
+real	0m4.699s
+user	0m1.160s
+sys	0m3.539s
+== build excel_rowcap.csv (8 hours flattened, id,type,actor,repo,created_at) ==
+
+real	1m37.384s
+user	2m19.211s
+sys	0m8.342s
+-rw-rw-r-- 1 ishigaki-cs6 ishigaki-cs6 148244168 Jul 21 15:28 excel_rowcap.csv
+1612732 excel_rowcap.csv
+done

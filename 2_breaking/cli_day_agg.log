@@ -1,0 +1,20 @@
+$ time jq -r '.type' data/day.json | sort | uniq -c | sort -nr
+3682194 PushEvent
+ 553099 CreateEvent
+ 361744 PullRequestEvent
+ 220234 IssueCommentEvent
+ 202448 WatchEvent
+ 141711 DeleteEvent
+ 108706 PullRequestReviewEvent
+  79108 IssuesEvent
+  60335 PullRequestReviewCommentEvent
+  46549 ForkEvent
+  22991 ReleaseEvent
+  15759 PublicEvent
+  14199 CommitCommentEvent
+  12790 MemberEvent
+   6434 GollumEvent
+
+real	5m34.798s
+user	5m25.081s
+sys	0m10.150s
