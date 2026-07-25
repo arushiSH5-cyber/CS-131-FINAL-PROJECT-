@@ -1,0 +1,191 @@
+{
+  "clusterName": "cs131-cluster",
+  "clusterUuid": "f00efc53-b5b5-4a0c-b7d8-7739e4f225d3",
+  "config": {
+    "configBucket": "dataproc-staging-us-central1-940057871063-k6wg7l4a",
+    "endpointConfig": {},
+    "gceClusterConfig": {
+      "internalIpOnly": true,
+      "networkUri": "https://www.googleapis.com/compute/v1/projects/project-851f6edb-9515-4be5-90e/global/networks/default",
+      "serviceAccountScopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableSecureBoot": true,
+        "enableVtpm": true
+      },
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/project-851f6edb-9515-4be5-90e/zones/us-central1-a"
+    },
+    "masterConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 500,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260619-045100-rc01",
+      "instanceNames": [
+        "cs131-cluster-m"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/project-851f6edb-9515-4be5-90e/zones/us-central1-a/machineTypes/e2-highmem-4",
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 1,
+      "preemptibility": "NON_PREEMPTIBLE"
+    },
+    "softwareConfig": {
+      "imageVersion": "2.2.84-debian12",
+      "properties": {
+        "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
+        "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+        "core:fs.gs.block.size": "134217728",
+        "core:fs.gs.metadata.cache.enable": "false",
+        "core:fs.gs.operation.move.enable": "true",
+        "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+        "distcp:mapreduce.map.java.opts": "-Xmx768m",
+        "distcp:mapreduce.map.memory.mb": "1024",
+        "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+        "distcp:mapreduce.reduce.memory.mb": "1024",
+        "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+        "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+        "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+        "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+        "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+        "hdfs:dfs.namenode.handler.count": "20",
+        "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+        "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+        "hdfs:dfs.namenode.lifeline.rpc-address": "cs131-cluster-m:8050",
+        "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+        "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+        "hdfs:dfs.namenode.service.handler.count": "10",
+        "hdfs:dfs.namenode.servicerpc-address": "cs131-cluster-m:8051",
+        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
+        "mapred:mapreduce.job.maps": "21",
+        "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+        "mapred:mapreduce.job.reduces": "7",
+        "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+        "mapred:mapreduce.map.cpu.vcores": "1",
+        "mapred:mapreduce.map.java.opts": "-Xmx5658m",
+        "mapred:mapreduce.map.memory.mb": "7073",
+        "mapred:mapreduce.reduce.cpu.vcores": "1",
+        "mapred:mapreduce.reduce.java.opts": "-Xmx5658m",
+        "mapred:mapreduce.reduce.memory.mb": "7073",
+        "mapred:mapreduce.task.io.sort.mb": "256",
+        "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx5658m",
+        "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+        "mapred:yarn.app.mapreduce.am.resource.mb": "7073",
+        "spark-env:SPARK_DAEMON_MEMORY": "4000m",
+        "spark:spark.driver.maxResultSize": "4096m",
+        "spark:spark.driver.memory": "8192m",
+        "spark:spark.executor.cores": "2",
+        "spark:spark.executor.instances": "2",
+        "spark:spark.executor.memory": "12860m",
+        "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+        "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
+        "spark:spark.scheduler.mode": "FAIR",
+        "spark:spark.sql.cbo.enabled": "true",
+        "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
+        "spark:spark.ui.port": "0",
+        "spark:spark.yarn.am.memory": "640m",
+        "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "3276",
+        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "4000",
+        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "4000",
+        "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+        "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+        "yarn:yarn.nodemanager.resource.memory-mb": "28292",
+        "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+        "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+        "yarn:yarn.scheduler.maximum-allocation-mb": "28292",
+        "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+      }
+    },
+    "tempBucket": "dataproc-temp-us-central1-940057871063-z3nsyzk8",
+    "workerConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 500,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20260619-045100-rc01",
+      "instanceNames": [
+        "cs131-cluster-w-0",
+        "cs131-cluster-w-1",
+        "cs131-cluster-w-2",
+        "cs131-cluster-w-3"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/project-851f6edb-9515-4be5-90e/zones/us-central1-a/machineTypes/e2-highmem-4",
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 4,
+      "preemptibility": "NON_PREEMPTIBLE"
+    }
+  },
+  "labels": {
+    "goog-dataproc-cluster-create-timestamp": "1784941332",
+    "goog-dataproc-cluster-name": "cs131-cluster",
+    "goog-dataproc-cluster-uuid": "f00efc53-b5b5-4a0c-b7d8-7739e4f225d3",
+    "goog-dataproc-drz-resource-uuid": "cluster-f00efc53-b5b5-4a0c-b7d8-7739e4f225d3",
+    "goog-dataproc-location": "us-central1"
+  },
+  "metrics": {
+    "hdfsMetrics": {
+      "dfs-blocks-corrupt": "0",
+      "dfs-blocks-default-replication-factor": "2",
+      "dfs-blocks-missing": "0",
+      "dfs-blocks-missing-repl-one": "0",
+      "dfs-blocks-pending-deletion": "0",
+      "dfs-blocks-under-replication": "0",
+      "dfs-capacity-present": "1462708326400",
+      "dfs-capacity-remaining": "1462708228096",
+      "dfs-capacity-total": "1584520642560",
+      "dfs-capacity-used": "98304",
+      "dfs-nodes-decommissioned": "0",
+      "dfs-nodes-decommissioning": "0",
+      "dfs-nodes-running": "3"
+    },
+    "yarnMetrics": {
+      "yarn-apps-completed": "1",
+      "yarn-apps-failed": "0",
+      "yarn-apps-killed": "0",
+      "yarn-apps-pending": "0",
+      "yarn-apps-running": "0",
+      "yarn-apps-submitted": "1",
+      "yarn-containers-allocated": "0",
+      "yarn-containers-pending": "0",
+      "yarn-containers-reserved": "0",
+      "yarn-memory-mb-allocated": "0",
+      "yarn-memory-mb-available": "56584",
+      "yarn-memory-mb-pending": "0",
+      "yarn-memory-mb-reserved": "0",
+      "yarn-memory-mb-total": "56584",
+      "yarn-nodes-active": "2",
+      "yarn-nodes-decommissioned": "0",
+      "yarn-nodes-decommissioning": "0",
+      "yarn-nodes-lost": "0",
+      "yarn-nodes-new": "0",
+      "yarn-nodes-rebooted": "0",
+      "yarn-nodes-shutdown": "0",
+      "yarn-nodes-unhealthy": "0",
+      "yarn-vcores-allocated": "0",
+      "yarn-vcores-available": "8",
+      "yarn-vcores-pending": "0",
+      "yarn-vcores-reserved": "0",
+      "yarn-vcores-total": "8"
+    }
+  },
+  "projectId": "project-851f6edb-9515-4be5-90e",
+  "status": {
+    "state": "RUNNING",
+    "stateStartTime": "2026-07-25T01:24:48.107216Z"
+  },
+  "statusHistory": [
+    {
+      "state": "CREATING",
+      "stateStartTime": "2026-07-25T01:02:12.414985Z"
+    },
+    {
+      "state": "RUNNING",
+      "stateStartTime": "2026-07-25T01:04:46.586639Z"
+    },
+    {
+      "state": "UPDATING",
+      "stateStartTime": "2026-07-25T01:22:57.096041Z"
+    }
+  ]
+}

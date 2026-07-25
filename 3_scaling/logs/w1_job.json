@@ -1,0 +1,55 @@
+{
+  "done": true,
+  "driverControlFilesUri": "gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/a1a0a867-9d77-462e-b25e-d62678afa5f7/jobs/07246ae372a54fb18f0ad2aa5af6d9ca/",
+  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/a1a0a867-9d77-462e-b25e-d62678afa5f7/jobs/07246ae372a54fb18f0ad2aa5af6d9ca/driveroutput",
+  "jobUuid": "165d2020-7992-321e-a8d8-bc1794e505ab",
+  "placement": {
+    "clusterName": "cs131-w1",
+    "clusterUuid": "a1a0a867-9d77-462e-b25e-d62678afa5f7"
+  },
+  "pysparkJob": {
+    "args": [
+      "gs://yixuliu-cs131-project/gharchive/*.json.gz",
+      "gs://yixuliu-cs131-project/out/w1"
+    ],
+    "mainPythonFileUri": "gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/a1a0a867-9d77-462e-b25e-d62678afa5f7/jobs/07246ae372a54fb18f0ad2aa5af6d9ca/staging/spark_job.py#1784938634959327",
+    "properties": {
+      "spark.driver.memory": "1536m",
+      "spark.executor.memory": "4096m",
+      "spark.executor.memoryOverhead": "512m"
+    }
+  },
+  "reference": {
+    "jobId": "07246ae372a54fb18f0ad2aa5af6d9ca",
+    "projectId": "project-851f6edb-9515-4be5-90e"
+  },
+  "status": {
+    "state": "DONE",
+    "stateStartTime": "2026-07-25T01:00:53.289720Z"
+  },
+  "statusHistory": [
+    {
+      "state": "PENDING",
+      "stateStartTime": "2026-07-25T00:17:15.185728Z"
+    },
+    {
+      "state": "SETUP_DONE",
+      "stateStartTime": "2026-07-25T00:17:15.271644Z"
+    },
+    {
+      "details": "Agent reported job success",
+      "state": "RUNNING",
+      "stateStartTime": "2026-07-25T00:17:15.849400Z"
+    }
+  ],
+  "yarnApplications": [
+    {
+      "memoryMbSeconds": "23886351",
+      "name": "cs131-gharchive-monthly",
+      "progress": 1.0,
+      "state": "FINISHED",
+      "trackingUrl": "http://cs131-w1-m.us-central1-a.c.project-851f6edb-9515-4be5-90e.internal.:8088/proxy/application_1784938552543_0001/",
+      "vcoreSeconds": "10366"
+    }
+  ]
+}

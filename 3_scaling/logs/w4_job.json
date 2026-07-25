@@ -1,0 +1,55 @@
+{
+  "done": true,
+  "driverControlFilesUri": "gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/f00efc53-b5b5-4a0c-b7d8-7739e4f225d3/jobs/9b5e71b430f3414383d7e8159c7b8e47/",
+  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/f00efc53-b5b5-4a0c-b7d8-7739e4f225d3/jobs/9b5e71b430f3414383d7e8159c7b8e47/driveroutput",
+  "jobUuid": "8f2e76c0-550a-3164-b470-83a3f983a6b9",
+  "placement": {
+    "clusterName": "cs131-cluster",
+    "clusterUuid": "f00efc53-b5b5-4a0c-b7d8-7739e4f225d3"
+  },
+  "pysparkJob": {
+    "args": [
+      "gs://yixuliu-cs131-project/gharchive/*.json.gz",
+      "gs://yixuliu-cs131-project/out/w4"
+    ],
+    "mainPythonFileUri": "gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/f00efc53-b5b5-4a0c-b7d8-7739e4f225d3/jobs/9b5e71b430f3414383d7e8159c7b8e47/staging/spark_job.py#1784942707430871",
+    "properties": {
+      "spark.driver.memory": "1536m",
+      "spark.executor.memory": "4096m",
+      "spark.executor.memoryOverhead": "512m"
+    }
+  },
+  "reference": {
+    "jobId": "9b5e71b430f3414383d7e8159c7b8e47",
+    "projectId": "project-851f6edb-9515-4be5-90e"
+  },
+  "status": {
+    "state": "DONE",
+    "stateStartTime": "2026-07-25T01:35:28.681662Z"
+  },
+  "statusHistory": [
+    {
+      "state": "PENDING",
+      "stateStartTime": "2026-07-25T01:25:07.638657Z"
+    },
+    {
+      "state": "SETUP_DONE",
+      "stateStartTime": "2026-07-25T01:25:07.714492Z"
+    },
+    {
+      "details": "Agent reported job success",
+      "state": "RUNNING",
+      "stateStartTime": "2026-07-25T01:25:08.125329Z"
+    }
+  ],
+  "yarnApplications": [
+    {
+      "memoryMbSeconds": "22253663",
+      "name": "cs131-gharchive-monthly",
+      "progress": 1.0,
+      "state": "FINISHED",
+      "trackingUrl": "http://cs131-cluster-m.us-central1-a.c.project-851f6edb-9515-4be5-90e.internal.:8088/proxy/application_1784941440768_0002/",
+      "vcoreSeconds": "9656"
+    }
+  ]
+}

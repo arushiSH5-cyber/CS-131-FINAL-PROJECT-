@@ -1,4 +1,4 @@
-## CS 131 Final Project — Big-Data Analysis of GitHub Activity
+CS 131 Final Project — Big-Data Analysis of GitHub Activity
 
 **Course:** CS 131 · **Format:** Pairs · **Duration:** ~4 weeks
 **Members:** Yixu Liu (017406857) · Arushi Nirmal
@@ -62,9 +62,12 @@ CS131_final_project/       ← repo root
 ├── 2_breaking/            ← Phase 2: Excel + pandas breaking point
 │   ├── breaking.txt         experiment notes + numbers
 │   └── screenshots/         Excel row-cap / pandas OOM screenshots
-├── 3_scaling/             ← Phase 3: PySpark on Dataproc
-│   ├── scaling.txt          1 vs 2 vs 4 worker runtimes
-│   └── *.py                 pyspark jobs
+├── 3_scaling/             ← Phase 3: PySpark on Dataproc (done)
+│   ├── scaling.txt          1 vs 2 vs 4 worker runtimes + full writeup
+│   ├── spark_job.py         the PySpark job (same file for every cluster size)
+│   ├── run_scaling.sh       submit + timing harness
+│   ├── logs/                per-run driver logs, job timings, cluster snapshots
+│   └── out/                 aggregated CSVs — 273.5 GB in, 43 KB out (Phase 4 input)
 └── 4_analysis/            ← Phase 4: answer + visualizations + poster
     └── poster.pdf           final poster (links back to this repo)
 ```
@@ -73,10 +76,10 @@ Milestones
 
 | Week | Milestone | Status |
 |------|-----------|--------|
-| 1 | Proposal approved + Phase 1 CLI profiling | ☐ |
-| 2 | Phase 2 — Excel fails, pandas chokes, benchmark table | ☐ |
-| 3 | Phase 3 — PySpark on Dataproc + 1/2/4-worker scaling | ☐ |
-| 4 | Phase 4 — answer the question, visualize, poster | ☐ |
+| 1 | Proposal approved + Phase 1 CLI profiling | ☑ done — 552 files, 273.5 GB, 85.3 M events profiled (`1_profile/profiling.txt`) |
+| 2 | Phase 2 — Excel fails, pandas chokes, benchmark table | ☑ done — Excel drops 35% silently; pandas 14× RAM amplification → MemoryError (`2_breaking/breaking.txt`) |
+| 3 | Phase 3 — PySpark on Dataproc + 1/2/4-worker scaling | ☑ done — 43m37s → 17m28s → 10m21s, byte-identical outputs (`3_scaling/scaling.txt`) |
+| 4 | Phase 4 — answer the question, visualize, poster | ☐ in progress — aggregated CSVs ready in `3_scaling/out/` |
 
 Tools
 

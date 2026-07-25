@@ -1,0 +1,74 @@
+Job [23fda137bb7b4a2e8610451c1ae534c0] submitted.
+Waiting for job output...
+26/07/24 23:09:12 INFO SparkEnv: Registering MapOutputTracker
+26/07/24 23:09:12 INFO SparkEnv: Registering BlockManagerMaster
+26/07/24 23:09:13 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/07/24 23:09:13 INFO SparkEnv: Registering OutputCommitCoordinator
+26/07/24 23:09:14 INFO MetricsConfig: Loaded properties from hadoop-metrics2.properties
+26/07/24 23:09:14 INFO MetricsSystemImpl: Scheduled Metric snapshot period at 10 second(s).
+26/07/24 23:09:14 INFO MetricsSystemImpl: google-hadoop-file-system metrics system started
+26/07/24 23:09:15 INFO DataprocSparkPlugin: Registered 188 driver metrics
+26/07/24 23:09:16 INFO DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at cs131-w1-m.us-central1-a.c.project-851f6edb-9515-4be5-90e.internal./10.128.0.9:8032
+26/07/24 23:09:17 INFO AHSProxy: Connecting to Application History server at cs131-w1-m.us-central1-a.c.project-851f6edb-9515-4be5-90e.internal./10.128.0.9:10200
+26/07/24 23:09:18 INFO Configuration: resource-types.xml not found
+26/07/24 23:09:18 INFO ResourceUtils: Unable to find 'resource-types.xml'.
+26/07/24 23:09:21 INFO YarnClientImpl: Submitted application application_1784934452427_0001
+26/07/24 23:09:22 INFO DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at cs131-w1-m.us-central1-a.c.project-851f6edb-9515-4be5-90e.internal./10.128.0.9:8030
+26/07/24 23:09:25 INFO RequestTracker: Detected high latency for [url=https://storage.googleapis.com/storage/v1/b/dataproc-temp-us-central1-940057871063-z3nsyzk8/o?delimiter=/&fields=items(bucket,name,timeCreated,updated,generation,metageneration,size,contentType,contentEncoding,md5Hash,crc32c,metadata),prefixes,nextPageToken&includeFoldersAsPrefixes=false&includeTrailingDelimiter=true&maxResults=1&prefix=1513176d-c2a6-4626-b13e-df83ca83e264/spark-job-history/; invocationId=gl-java/11.0.30 gdcl/2.1.1 linux/6.1.0 gccl-invocation-id/56ddc3ed]. durationMs=493; method=GET; thread=gcsfs-misc-0 [CONTEXT ratelimit_period="10 SECONDS" ]
+26/07/24 23:09:25 INFO GoogleCloudStorageImpl: Ignoring exception of type GoogleJsonResponseException; verified object already exists with desired state.
+26/07/24 23:09:27 INFO GoogleHadoopOutputStream: hflush(): No-op due to rate limit (RateLimiter[stableRate=0.2qps]): readers will *not* yet see flushed data for gs://dataproc-temp-us-central1-940057871063-z3nsyzk8/1513176d-c2a6-4626-b13e-df83ca83e264/spark-job-history/application_1784934452427_0001.inprogress [CONTEXT ratelimit_period="1 MINUTES" ]
+26/07/24 23:10:04 INFO GhfsGlobalStorageStatistics: periodic connector metrics: {action_http_delete_request=3, action_http_delete_request_duration=202, action_http_delete_request_max=102, action_http_delete_request_mean=67, action_http_delete_request_min=46, action_http_post_request=8, action_http_post_request_duration=781, action_http_post_request_max=187, action_http_post_request_mean=97, action_http_post_request_min=37, action_http_put_request=4, action_http_put_request_duration=499, action_http_put_request_max=171, action_http_put_request_mean=124, action_http_put_request_min=91, directories_created=1, files_created=1, gcs_api_client_non_found_response_count=20, gcs_api_client_precondition_failed_response_count=1, gcs_api_client_side_error_count=21, gcs_api_time=3734, gcs_api_total_request_count=46, gcs_connector_time=4973, gcs_get_other_request=3, gcs_list_dir_request=2, gcs_list_dir_request_duration=231, gcs_list_dir_request_max=166, gcs_list_dir_request_mean=115, gcs_list_dir_request_min=65, gcs_list_file_request=3, gcs_list_file_request_duration=577, gcs_list_file_request_max=493, gcs_list_file_request_mean=192, gcs_list_file_request_min=27, gcs_metadata_request=22, gcs_metadata_request_duration=1340, gcs_metadata_request_max=483, gcs_metadata_request_mean=60, gcs_metadata_request_min=23, gs_filesystem_create=4, gs_filesystem_initialize=3, op_create=1, op_create_duration=194, op_create_max=194, op_create_mean=194, op_create_min=194, op_get_file_status=2, op_get_file_status_duration=2196, op_get_file_status_max=1986, op_get_file_status_mean=1098, op_get_file_status_min=210, op_get_list_status_result_size=552, op_glob_status=1, op_hflush=11, op_hflush_duration=1674, op_hflush_max=559, op_hflush_mean=152, op_list_status=1, op_list_status_duration=483, op_list_status_max=483, op_list_status_mean=483, op_list_status_min=483, op_mkdirs=1, op_mkdirs_duration=426, op_mkdirs_max=426, op_mkdirs_mean=426, op_mkdirs_min=426, stream_write_bytes=1829748, uptimeSeconds=50}
+[CONTEXT ratelimit_period="5 MINUTES" ]
+26/07/24 23:31:48 INFO DataprocSparkPlugin: Shutting down driver plugin. metrics=[action_http_patch_request=0, files_created=1, gcs_api_server_timeout_count=0, op_get_list_status_result_size=552, op_open=0, action_http_delete_request=5, gcs_api_time=4911, gcs_backoff_count=0, gcs_api_client_unauthorized_response_count=0, stream_read_close_operations=0, stream_read_bytes_backwards_on_seek=0, gs_filesystem_create=4, exception_count=0, gcs_exception_count=0, gcs_api_total_request_count=62, op_create=1, stream_read_vectored_operations=0, gcs_metadata_request=28, gcs_api_client_bad_request_count=0, action_http_put_request=6, op_create_non_recursive=0, gcs_api_client_gone_response_count=0, gs_filesystem_initialize=3, stream_read_vectored_incoming_ranges=0, stream_write_operations=0, gcs_list_dir_request=2, stream_read_operations=0, gcs_api_client_request_timeout_count=0, op_rename=0, op_get_file_status=2, op_glob_status=1, op_exists=0, stream_write_bytes=3748775, op_xattr_list=0, op_get_delegation_token=0, gcs_api_server_unavailable_count=0, directories_created=1, files_delete_rejected=0, stream_read_vectored_combined_ranges=0, op_xattr_get_named=0, gcs_list_file_request=3, op_hsync=0, action_http_get_request=0, stream_read_operations_incomplete=0, op_delete=0, stream_read_bytes=0, gcs_api_client_non_found_response_count=26, op_list_located_status=0, gcs_api_client_requested_range_not_statisfiable_count=0, op_hflush=22, op_list_status=1, stream_read_vectored_read_bytes_discarded=0, op_xattr_get_named_map=0, gcs_api_client_side_error_count=27, op_get_file_checksum=0, gcs_api_server_internal_error_count=0, stream_read_seek_bytes_skipped=0, stream_write_close_operations=0, gcs_get_media_request=0, gcs_connector_time=5971, files_deleted=0, action_http_post_request=13, op_mkdirs=1, gcs_api_client_rate_limit_error_count=0, op_copy_from_local_file=0, gcs_api_server_bad_gateway_count=0, stream_readVectored_range_duration=0, stream_read_seek_backward_operations=0, gcs_api_server_side_error_count=0, stream_read_seek_operations=0, gcs_get_other_request=5, stream_read_seek_forward_operations=0, gcs_api_client_precondition_failed_response_count=1, op_xattr_get_map=0, delegation_tokens_issued=0, gcs_backoff_time=0, gcs_list_dir_request_min=65, gcs_metadata_request_min=20, op_delete_min=0, op_glob_status_min=0, op_create_non_recursive_min=0, op_hsync_min=0, op_xattr_get_named_min=0, op_xattr_get_named_map_min=0, op_hflush_min=0, op_xattr_list_min=0, action_http_put_request_min=91, op_open_min=0, gcs_list_file_request_min=27, stream_write_close_operations_min=0, op_create_min=194, action_http_delete_request_min=46, op_mkdirs_min=426, op_list_status_min=483, gcs_get_media_request_min=0, stream_readVectored_range_duration_min=0, stream_read_vectored_operations_min=0, stream_read_close_operations_min=0, stream_read_operations_min=0, stream_read_seek_operations_min=0, op_xattr_get_map_min=0, stream_write_operations_min=0, action_http_patch_request_min=0, op_get_file_status_min=210, op_rename_min=0, delegation_tokens_issued_min=0, action_http_post_request_min=37, stream_read_close_operations_max=0, stream_read_seek_operations_max=0, op_hflush_max=717, op_xattr_list_max=0, op_xattr_get_map_max=0, action_http_put_request_max=253, action_http_patch_request_max=0, action_http_post_request_max=199, stream_write_close_operations_max=0, action_http_delete_request_max=102, op_mkdirs_max=426, gcs_get_media_request_max=0, op_rename_max=0, stream_read_vectored_operations_max=0, stream_readVectored_range_duration_max=0, op_xattr_get_named_map_max=0, stream_write_operations_max=0, stream_read_operations_max=0, op_xattr_get_named_max=0, op_glob_status_max=0, op_create_non_recursive_max=0, op_get_file_status_max=1986, op_open_max=0, delegation_tokens_issued_max=0, gcs_list_file_request_max=493, gcs_metadata_request_max=483, op_create_max=194, op_delete_max=0, op_list_status_max=483, op_hsync_max=0, gcs_list_dir_request_max=166, op_open_mean=0, op_xattr_list_mean=0, op_rename_mean=0, op_xattr_get_map_mean=0, gcs_list_dir_request_mean=115, op_glob_status_mean=0, stream_read_seek_operations_mean=0, gcs_list_file_request_mean=192, stream_write_operations_mean=0, op_hflush_mean=121, gcs_metadata_request_mean=55, op_list_status_mean=483, stream_read_close_operations_mean=0, op_xattr_get_named_map_mean=0, stream_read_vectored_operations_mean=0, op_mkdirs_mean=426, action_http_post_request_mean=93, stream_write_close_operations_mean=0, action_http_put_request_mean=141, action_http_patch_request_mean=0, op_hsync_mean=0, delegation_tokens_issued_mean=0, action_http_delete_request_mean=61, stream_read_operations_mean=0, op_create_mean=194, op_delete_mean=0, op_create_non_recursive_mean=0, stream_readVectored_range_duration_mean=0, op_xattr_get_named_mean=0, gcs_get_media_request_mean=0, op_get_file_status_mean=1098, op_delete_duration=0, op_get_file_status_duration=2196, action_http_put_request_duration=849, stream_write_operations_duration=0, op_hsync_duration=0, gcs_metadata_request_duration=1547, gcs_get_media_request_duration=0, gcs_list_file_request_duration=577, op_list_status_duration=483, op_mkdirs_duration=426, op_open_duration=0, op_create_duration=194, op_hflush_duration=2672, gcs_list_dir_request_duration=231, op_glob_status_duration=0, stream_read_operations_duration=0, action_http_delete_request_duration=307, action_http_post_request_duration=1217, op_rename_duration=0]
+Traceback (most recent call last):
+  File "/tmp/23fda137bb7b4a2e8610451c1ae534c0/spark_job.py", line 114, in <module>
+    main(sys.argv[1], sys.argv[2])
+  File "/tmp/23fda137bb7b4a2e8610451c1ae534c0/spark_job.py", line 88, in main
+    .option("header", True).csv(out_root + "/monthly")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/spark/python/lib/pyspark.zip/pyspark/sql/readwriter.py", line 1864, in csv
+  File "/usr/lib/spark/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+  File "/usr/lib/spark/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+  File "/usr/lib/spark/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 326, in get_return_value
+py4j.protocol.Py4JJavaError: An error occurred while calling o148.csv.
+: org.apache.spark.SparkException: Job 2 cancelled because SparkContext was shut down
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$cleanUpAfterSchedulerStop$1(DAGScheduler.scala:1253)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$cleanUpAfterSchedulerStop$1$adapted(DAGScheduler.scala:1251)
+	at scala.collection.mutable.HashSet.foreach(HashSet.scala:79)
+	at org.apache.spark.scheduler.DAGScheduler.cleanUpAfterSchedulerStop(DAGScheduler.scala:1251)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onStop(DAGScheduler.scala:3088)
+	at org.apache.spark.util.EventLoop.stop(EventLoop.scala:84)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$stop$3(DAGScheduler.scala:2973)
+	at org.apache.spark.util.Utils$.tryLogNonFatalError(Utils.scala:1377)
+	at org.apache.spark.scheduler.DAGScheduler.stop(DAGScheduler.scala:2973)
+	at org.apache.spark.SparkContext.$anonfun$stop$12(SparkContext.scala:2325)
+	at org.apache.spark.util.Utils$.tryLogNonFatalError(Utils.scala:1377)
+	at org.apache.spark.SparkContext.stop(SparkContext.scala:2325)
+	at org.apache.spark.SparkContext.stop(SparkContext.scala:2278)
+	at org.apache.spark.SparkContext.$anonfun$new$37(SparkContext.scala:740)
+	at org.apache.spark.util.SparkShutdownHook.run(ShutdownHookManager.scala:214)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$2(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:1930)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$1(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at scala.util.Try$.apply(Try.scala:213)
+	at org.apache.spark.util.SparkShutdownHookManager.runAll(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anon$2.run(ShutdownHookManager.scala:178)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+ERROR: (gcloud.dataproc.jobs.submit.pyspark) Job [23fda137bb7b4a2e8610451c1ae534c0] failed with error:
+Driver received SIGTERM/SIGKILL signal and exited with 143 code, which potentially signifies a memory pressure.
+Google Cloud Dataproc Agent reports job failure. If logs are available, they can be found at:
+https://console.cloud.google.com/dataproc/jobs/23fda137bb7b4a2e8610451c1ae534c0?project=project-851f6edb-9515-4be5-90e&region=us-central1
+gcloud dataproc jobs wait '23fda137bb7b4a2e8610451c1ae534c0' --region 'us-central1' --project 'project-851f6edb-9515-4be5-90e'
+https://console.cloud.google.com/storage/browser/dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/1513176d-c2a6-4626-b13e-df83ca83e264/jobs/23fda137bb7b4a2e8610451c1ae534c0/
+gs://dataproc-staging-us-central1-940057871063-k6wg7l4a/google-cloud-dataproc-metainfo/1513176d-c2a6-4626-b13e-df83ca83e264/jobs/23fda137bb7b4a2e8610451c1ae534c0/driveroutput.*
+
+real	23m5.433s
+user	0m9.891s
+sys	0m0.570s
