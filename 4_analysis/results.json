@@ -1,0 +1,28 @@
+{
+  "window": "21Q1\u201326Q1",
+  "usable_quarters": 20,
+  "excluded_quarters": [
+    "21Q4",
+    "26Q2",
+    "26Q3"
+  ],
+  "ai_share_first_pct": 0.515,
+  "ai_share_last_pct": 0.94,
+  "ai_share_peak_pct": 2.264,
+  "ai_share_peak_quarter": "23Q2",
+  "peak_vs_start_x": 4.4,
+  "pre_chatgpt_mean_share_pct": 0.61,
+  "post_gpt4_mean_share_pct": 0.954,
+  "structural_lift_x": 1.56,
+  "ai_volume_growth_x": 2.35,
+  "general_volume_growth_x": 1.28,
+  "ai_cagr_pct": 18.7,
+  "general_cagr_pct": 5.1,
+  "peak_ai_repos": 5788,
+  "peak_ai_actors": 19977,
+  "prior_quarter_ai_actors": 3734,
+  "star_intensity_mean_x": 4.03,
+  "star_intensity_min_x": 2.12,
+  "star_intensity_peak_x": 6.61,
+  "ai_star_share_peak_pct": 35.0
+}

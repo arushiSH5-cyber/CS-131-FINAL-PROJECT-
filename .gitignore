@@ -29,3 +29,7 @@ metastore_db/
 # OS junk
 .DS_Store
 Thumbs.db
+
+# Phase 4: derived series + figures (small, intentional)
+!4_analysis/*.csv
+!4_analysis/*.json
