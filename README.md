@@ -2,8 +2,6 @@
 
 **Course:** CS 131 · **Format:** Pairs · **Duration:** ~4 weeks
 **Members:** Yixu Liu (017406857) · Arushi Nirmal
-**Repo:** https://github.com/kgr-17/CS131_final_project
-**Presentation:** August 3 (poster on laptop screen)
 
 ---
 
