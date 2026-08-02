@@ -35,9 +35,6 @@ rows**. One recent day is millions of events; we pull enough days/months across
 2021–2026 to comfortably clear both thresholds. Exact measured sizes are
 recorded in Phase 1 (`1_profile/profiling.txt`).
 
-**Backup dataset (Option B):** GDELT 2.0 global news/events — see
-[`0_proposal/OPTION_B_gdelt.md`](0_proposal/OPTION_B_gdelt.md). Same four-phase
-structure; used only if GH Archive is rejected in proposal feedback.
 
 ## The two-tool comparison (the point of the project)
 
