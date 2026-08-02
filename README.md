@@ -102,12 +102,3 @@ CLI: `zcat`/`gunzip`, `wc`, `jq`, `grep -c`, `cut`, `awk`, `sort`, `uniq -c`,
 `time` · Python: `pandas` (to break it) · **PySpark** on **GCP Dataproc**,
 data read directly from a **GCS** bucket via `gs://…`.
 
----
-
-Reproducing
-
-Each phase directory documents its own exact commands. Start with
-[`RULES.md`](RULES.md) for the workflow and [`TEAMWORK.md`](TEAMWORK.md) for who
-owns each phase, then work the phases in order 1 → 4. See
-[`0_proposal/proposal.md`](0_proposal/proposal.md) for the one-page proposal that
-was submitted to Canvas.
